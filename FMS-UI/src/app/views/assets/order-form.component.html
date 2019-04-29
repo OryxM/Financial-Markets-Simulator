@@ -1,0 +1,48 @@
+
+
+        <h1>{{data.symbol}}</h1>
+
+
+<div mat-dialog-content [formGroup]="orderForm">
+
+    <mat-radio-group formControlName="transactionType" required>
+    <mat-radio-button value="BUY">Buy</mat-radio-button>
+    <mat-radio-button value="SELL">Sell</mat-radio-button>
+  </mat-radio-group>
+
+
+  <mat-form-field>
+  <input formControlName="quantity" matInput placeholder="Quantity" type="number" required>
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-select formControlName="orderType" placeholder="order type" [(value)]="selected">
+      <mat-option value="MARKET">Market</mat-option>
+      <mat-option value="LIMIT">Limit</mat-option>
+        <mat-option value="STOP">Stop</mat-option>
+    </mat-select>
+
+  </mat-form-field>
+  <mat-form-field [hidden]="selected == 'MARKET' || selected == 'STOP' || !selected">
+<input formControlName="limitPrice" matInput placeholder="limit price" type="number">
+  </mat-form-field>
+  <mat-form-field [hidden]="selected == 'MARKET' || selected == 'LIMIT' || !selected">
+<input formControlName="stopPrice" matInput placeholder="Stop price" type="number">
+  </mat-form-field>
+  <mat-form-field>
+    <mat-select formControlName="duration" placeholder="Duration" >
+      <mat-option value="GTC">GTC</mat-option>
+      <mat-option value="FOK">FOK</mat-option>
+        <mat-option value="IOC">IOC</mat-option>
+        <mat-option value="DAY">DAY</mat-option>
+
+    </mat-select>
+
+  </mat-form-field>
+
+
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="onNoClick()">Cancel</button>
+  <button mat-button (click)="save(data.symbol,data.price)"  cdkFocusInitial>Submit</button>
+</div>
