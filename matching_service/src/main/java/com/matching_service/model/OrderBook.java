@@ -6,6 +6,7 @@ import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -22,13 +23,13 @@ public class OrderBook {
 
                 BigDecimal price1 = ((LimitOrder) object1).getLimitPrice();
                 BigDecimal price2 = ((LimitOrder) object2).getLimitPrice();
-                int comparator = ((LimitOrder) object1).getTransactionType() == TransactionType.BUY ?
+                int comparator = ((LimitOrder) object1).getTransactionType() == TransactionType.SELL ?
                         price1.compareTo(price2) : price2.compareTo(price1)  ;
                 if (comparator != 0) {
                     return comparator;
                 }
-                LocalDateTime timestamp1 =((LimitOrder) object1).getTime();
-                LocalDateTime timestamp2 =((LimitOrder) object2).getTime();
+                ZonedDateTime timestamp1 =((LimitOrder) object1).getTime();
+                ZonedDateTime timestamp2 =((LimitOrder) object2).getTime();
                 return timestamp1.compareTo(timestamp2);
             }
         });

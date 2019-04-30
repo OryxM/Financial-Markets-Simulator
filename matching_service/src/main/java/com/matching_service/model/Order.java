@@ -8,6 +8,8 @@ import org.springframework.data.mongodb.core.mapping.Field;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
+
 import lombok.ToString;
 import lombok.Getter;
 import lombok.Setter;
@@ -28,15 +30,15 @@ public class Order {
     private long filled = 0;
     protected OrderType orderType = OrderType.MARKET;
     private Duration duration;
-    private LocalDateTime time;
+    private ZonedDateTime time;
     private State state = State.PENDING;
-    private LocalDateTime executionDate;
+    private ZonedDateTime executionTime;
     private BigDecimal executionPrice;
     private BigDecimal commission;
 
     public String getId() { return id.toHexString();}
     @JsonIgnore
-    public LocalDateTime getTime() {
+    public ZonedDateTime getTime() {
         return this.time;
     }
 
@@ -49,7 +51,7 @@ public class Order {
     public void fillOrder(BigDecimal executionPrice){
         this.state = State.FILLED;
         this.filled = this.quantity;
-        this.executionDate = LocalDateTime.now();
+        this.executionTime= ZonedDateTime.now();
         this.executionPrice= executionPrice;
         this.commission = valueOf(20);
 

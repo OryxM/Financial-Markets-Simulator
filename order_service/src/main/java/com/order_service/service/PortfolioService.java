@@ -55,14 +55,14 @@ LOGGER.info(new Date().toString());
                 createMarketOrder(orderRequest,limitOrder);
                 limitOrder.setLimitPrice(orderRequest.getLimitPrice().orElse(new BigDecimal(0)));
                 orderRepository.save(limitOrder);
-                //sender.send(limitOrder);
+                sender.send(limitOrder);
                 return limitOrder;
             case STOP:
                 StopLossOrder stopLossOrder =new StopLossOrder();
                 createMarketOrder(orderRequest,stopLossOrder);
                 stopLossOrder.setStopPrice(orderRequest.getStopPrice().orElse(new BigDecimal(0)));
                 orderRepository.save(stopLossOrder);
-                //sender.send(stopLossOrder);
+                sender.send(stopLossOrder);
                 return stopLossOrder;
 
             default:

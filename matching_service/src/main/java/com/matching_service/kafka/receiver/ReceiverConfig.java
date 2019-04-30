@@ -2,8 +2,6 @@ package com.matching_service.kafka.receiver;
 
 import java.util.HashMap;
 import java.util.Map;
-
-
 import com.matching_service.model.Order;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;

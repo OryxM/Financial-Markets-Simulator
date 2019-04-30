@@ -1,7 +1,9 @@
 package com.matching_service.kafka.receiver;
 
+import com.matching_service.model.LimitOrder;
 import com.matching_service.model.Order;
 import com.matching_service.model.OrderBook;
+import com.matching_service.model.StopLossOrder;
 import com.matching_service.service.MatchingService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,9 +25,20 @@ public class Receiver {
         public void receive(@Payload Order newOrder, @Headers MessageHeaders headers) {
             LOGGER.info("receiving order:'{}'", newOrder.getId());
             OrderBook orderBook =  matchingService.buildOrderBook(newOrder);
-            LOGGER.info(orderBook.getOrders().isEmpty() == true ? "Empty":"notEmpty");
-            LOGGER.info(Long.toString(orderBook.totalVolume()));
-            matchingService.attemptFillMarketOrder(orderBook,newOrder);
+            //LOGGER.info(orderBook.getOrders().isEmpty() == true ? "Empty":"notEmpty");
+            //LOGGER.info(Long.toString(orderBook.totalVolume()));
+            if (newOrder instanceof LimitOrder){
+
+            }
+            else if (newOrder instanceof StopLossOrder){
+
+            }
+            else{
+                LOGGER.info("fok:{}",matchingService.canBeImmediatelyFilled(orderBook,newOrder));
+                matchingService.fillMarketOrder(orderBook,newOrder);
+            }
+
+
             LOGGER.info(newOrder.getState().toString());
 
 
