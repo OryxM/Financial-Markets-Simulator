@@ -11,6 +11,9 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
 import java.math.BigDecimal;
+import java.util.ArrayDeque;
+import java.util.Deque;
+
 
 @Document(collection = "assets")
 @Getter @Setter @ToString
@@ -21,7 +24,9 @@ public class Asset {
     // ticker symbol is unique
     @Indexed(unique = true, direction = IndexDirection.DESCENDING, dropDups = true)
     private String symbol;
-    private BigDecimal price;
+    private ArrayDeque<BigDecimal> price;
+    private BigDecimal bid;
+    private BigDecimal ask;
 
     //public String getId() { return id.toHexString(); }
 

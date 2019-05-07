@@ -8,11 +8,11 @@
 		<version>2.1.3.RELEASE</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>com.PFE</groupId>
-	<artifactId>FMS</artifactId>
+	<groupId>com.order</groupId>
+	<artifactId>order</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>FMS</name>
-	<description>Financial markets simulators</description>
+	<name>order</name>
+	<description>order service</description>
 
 	<properties>
 	<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -90,6 +90,11 @@
 			<artifactId>lombok</artifactId>
 			<version>1.18.4</version>
 			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.datatype</groupId>
+			<artifactId>jackson-datatype-jsr310</artifactId>
+
 		</dependency>
 	</dependencies>
 

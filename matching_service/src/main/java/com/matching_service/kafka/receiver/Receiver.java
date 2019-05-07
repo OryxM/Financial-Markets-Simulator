@@ -3,7 +3,6 @@ package com.matching_service.kafka.receiver;
 import com.matching_service.model.LimitOrder;
 import com.matching_service.model.Order;
 import com.matching_service.model.OrderBook;
-import com.matching_service.model.StopLossOrder;
 import com.matching_service.service.MatchingService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,27 +20,38 @@ public class Receiver {
         @Autowired
         MatchingService matchingService;
 
-        @KafkaListener(topics = "${kafka.topic}", containerFactory="kafkaListenerContainerFactory")
+
+
+        @KafkaListener(topics = "${kafka.topic.receiver}", containerFactory="kafkaListenerContainerFactory")
         public void receive(@Payload Order newOrder, @Headers MessageHeaders headers) {
-            LOGGER.info("receiving order:'{}'", newOrder.getId());
+            LOGGER.info("receiving order: {} ", newOrder.getId());
+            LOGGER.info("receiving order: {} ", newOrder.getTime());
             OrderBook orderBook =  matchingService.buildOrderBook(newOrder);
-            //LOGGER.info(orderBook.getOrders().isEmpty() == true ? "Empty":"notEmpty");
-            //LOGGER.info(Long.toString(orderBook.totalVolume()));
-            if (newOrder instanceof LimitOrder){
-
-            }
-            else if (newOrder instanceof StopLossOrder){
-
-            }
-            else{
-                LOGGER.info("fok:{}",matchingService.canBeImmediatelyFilled(orderBook,newOrder));
-                matchingService.fillMarketOrder(orderBook,newOrder);
-            }
-
-
-            LOGGER.info(newOrder.getState().toString());
-
+         if (orderBook.getOrders().isEmpty())
+            LOGGER.info("No matching orders found");
+         else {
+             LOGGER.info("can be imm filled:{}", matchingService.canBeImmediatelyFilled(orderBook, newOrder));
+             matchingService.fillMarketOrder(orderBook, newOrder);
+             LOGGER.info(newOrder.getState().toString());
+         }
 
 
         }
+
+
+    @KafkaListener(topics = "${kafka.topic.receiver.limit}", containerFactory="kafkaListenerContainerFactoryLimit")
+    public void receiveLimitOrder(@Payload LimitOrder newOrder, @Headers MessageHeaders headers) {
+
+        LOGGER.info("receiving order: {} -- target price: {}", newOrder.getId(), newOrder.getLimitPrice());
+
+        OrderBook orderBook =  matchingService.buildOrderBook(newOrder);
+        if (orderBook.getOrders().isEmpty())
+            LOGGER.info("No matching orders found");
+        else {
+            LOGGER.info("can be imm filled:{}", matchingService.canBeImmediatelyFilled(orderBook, newOrder));
+            matchingService.fillMarketOrder(orderBook, newOrder);
+            LOGGER.info(newOrder.getState().toString());
+        }
+
+    }
     }

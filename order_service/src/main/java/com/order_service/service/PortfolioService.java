@@ -8,15 +8,12 @@ import com.order_service.model.Order;
 import com.order_service.model.StopLossOrder;
 import com.order_service.repository.AssetRepository;
 import com.order_service.repository.OrderRepository;
-import com.order_service.repository.UserRepository;
-
 import org.bson.types.ObjectId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.util.Date;
 import java.util.List;
@@ -25,7 +22,6 @@ import java.util.List;
 @Service
 public class PortfolioService {
 
-    private static final String TOPIC = "orders";
     @Autowired
     AssetRepository assetRepository;
     @Autowired
@@ -44,7 +40,7 @@ public class PortfolioService {
         order.setQuantity(orderRequest.getQuantity());
         order.setDuration(orderRequest.getDuration());
         order.setTime(ZonedDateTime.now());
-LOGGER.info(new Date().toString());
+        LOGGER.info(new Date().toString());
     }
 
     public Order createOrder(OrderRequest orderRequest){
@@ -55,14 +51,14 @@ LOGGER.info(new Date().toString());
                 createMarketOrder(orderRequest,limitOrder);
                 limitOrder.setLimitPrice(orderRequest.getLimitPrice().orElse(new BigDecimal(0)));
                 orderRepository.save(limitOrder);
-                sender.send(limitOrder);
+                sender.sendLimit(limitOrder);
                 return limitOrder;
             case STOP:
                 StopLossOrder stopLossOrder =new StopLossOrder();
                 createMarketOrder(orderRequest,stopLossOrder);
                 stopLossOrder.setStopPrice(orderRequest.getStopPrice().orElse(new BigDecimal(0)));
                 orderRepository.save(stopLossOrder);
-                sender.send(stopLossOrder);
+           //     sender.send(stopLossOrder);
                 return stopLossOrder;
 
             default:

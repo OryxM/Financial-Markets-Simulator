@@ -1,13 +1,17 @@
 package com.matching_service.model;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonFormat;
+
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.ser.ZonedDateTimeSerializer;
+import com.matching_service.Configuration.CustomZonedDateTimeDeserializer;
+import com.sun.xml.internal.ws.util.Constants;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
-import java.math.BigDecimal;
-import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 
 import lombok.ToString;
@@ -30,14 +34,17 @@ public class Order {
     private long filled = 0;
     protected OrderType orderType = OrderType.MARKET;
     private Duration duration;
+    @JsonSerialize(using = ZonedDateTimeSerializer.class)
+    @JsonDeserialize(using = CustomZonedDateTimeDeserializer.class)
     private ZonedDateTime time;
     private State state = State.PENDING;
-    private ZonedDateTime executionTime;
-    private BigDecimal executionPrice;
-    private BigDecimal commission;
+
+
 
     public String getId() { return id.toHexString();}
-    @JsonIgnore
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSZ")
+
     public ZonedDateTime getTime() {
         return this.time;
     }
@@ -48,12 +55,11 @@ public class Order {
     public long notFilledQuantity(){
         return quantity - filled ;
     }
-    public void fillOrder(BigDecimal executionPrice){
+    public void fillOrder(){
         this.state = State.FILLED;
         this.filled = this.quantity;
-        this.executionTime= ZonedDateTime.now();
-        this.executionPrice= executionPrice;
-        this.commission = valueOf(20);
+
+
 
     }
 }

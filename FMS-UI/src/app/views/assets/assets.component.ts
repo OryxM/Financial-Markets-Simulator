@@ -26,7 +26,7 @@ export class AssetsComponent  implements OnInit{
     constructor(private portfolioService: PortfolioService,public dialog: MatDialog) {}
   dataSource : any ;
 
-  columnsToDisplay = ['symbol','price'];
+  columnsToDisplay = ['symbol','bid','ask'];
 expandedElement: Asset | null;
 selectedAsset : Asset;
 

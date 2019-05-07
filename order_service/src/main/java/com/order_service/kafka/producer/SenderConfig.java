@@ -1,6 +1,8 @@
 package com.order_service.kafka.producer;
 import java.util.HashMap;
 import java.util.Map;
+
+import com.order_service.model.LimitOrder;
 import org.springframework.kafka.support.serializer.JsonSerializer;
 import com.order_service.model.Order;
 import org.apache.kafka.clients.producer.ProducerConfig;
@@ -38,10 +40,18 @@ public class SenderConfig {
     }
 
     @Bean
+    public ProducerFactory<String, LimitOrder> producerFactoryLimit() {
+
+        return new DefaultKafkaProducerFactory<>(producerConfigs());
+    }
+    @Bean
     public KafkaTemplate<String,Order> kafkaTemplate() {
         return new KafkaTemplate<>(producerFactory());
     }
-
+    @Bean
+    public KafkaTemplate<String, LimitOrder> kafkaTemplateLimit() {
+        return new KafkaTemplate<>(producerFactoryLimit());
+    }
     @Bean
     public Sender sender() {
         return new Sender();
