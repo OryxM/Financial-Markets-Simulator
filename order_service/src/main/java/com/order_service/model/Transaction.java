@@ -1,4 +1,4 @@
-package com.matching_service.model;
+package com.order_service.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

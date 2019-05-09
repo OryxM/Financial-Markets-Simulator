@@ -30,6 +30,7 @@ public class Asset {
     public String getId() { return id.toHexString(); }
     public void updatePrice(BigDecimal price){
         this.price.addFirst(price);
+        this.price.removeLast();
 
     }
 }

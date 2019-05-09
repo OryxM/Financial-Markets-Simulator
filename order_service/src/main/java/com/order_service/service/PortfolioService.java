@@ -1,13 +1,11 @@
 package com.order_service.service;
 
-import com.order_service.model.Asset;
+import com.order_service.model.*;
 import com.order_service.kafka.producer.Sender;
 import com.order_service.message.request.OrderRequest;
-import com.order_service.model.LimitOrder;
-import com.order_service.model.Order;
-import com.order_service.model.StopLossOrder;
 import com.order_service.repository.AssetRepository;
 import com.order_service.repository.OrderRepository;
+import com.order_service.repository.TransactionRepository;
 import org.bson.types.ObjectId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,6 +25,8 @@ public class PortfolioService {
     @Autowired
     OrderRepository orderRepository;
     @Autowired
+    TransactionRepository transactionRepository;
+    @Autowired
     Sender sender;
     private static final Logger LOGGER = LoggerFactory.getLogger(PortfolioService.class);
     public List<Asset> getAssets(){
@@ -36,6 +36,7 @@ public class PortfolioService {
     public void createMarketOrder(OrderRequest orderRequest, Order order) {
         Asset asset = assetRepository.findBySymbol(orderRequest.getAssetSymbol());
         order.setAsset(asset);
+        order.setUserId(new ObjectId(orderRequest.getUserId()));
         order.setTransactionType(orderRequest.getTransactionType());
         order.setQuantity(orderRequest.getQuantity());
         order.setDuration(orderRequest.getDuration());
@@ -49,16 +50,16 @@ public class PortfolioService {
             case LIMIT:
                 LimitOrder limitOrder = new LimitOrder();
                 createMarketOrder(orderRequest,limitOrder);
-                limitOrder.setLimitPrice(orderRequest.getLimitPrice().orElse(new BigDecimal(0)));
+                limitOrder.setLimitPrice(orderRequest.getLimitPrice().get());
+
                 orderRepository.save(limitOrder);
                 sender.sendLimit(limitOrder);
                 return limitOrder;
             case STOP:
                 StopLossOrder stopLossOrder =new StopLossOrder();
                 createMarketOrder(orderRequest,stopLossOrder);
-                stopLossOrder.setStopPrice(orderRequest.getStopPrice().orElse(new BigDecimal(0)));
+                stopLossOrder.setStopPrice(orderRequest.getStopPrice().get());
                 orderRepository.save(stopLossOrder);
-           //     sender.send(stopLossOrder);
                 return stopLossOrder;
 
             default:
@@ -73,7 +74,12 @@ public class PortfolioService {
 
     }
 
-    public List<Order> getOrders(){
-        return(orderRepository.findAll());
+    public List<Order> getOrders(String userId){
+        return(orderRepository.findByUserId(new ObjectId(userId)));
+    }
+    public List<Transaction> getTransactions(String userId){
+
+        return(transactionRepository.findByUserId(new ObjectId(userId)));
     }
 }
+

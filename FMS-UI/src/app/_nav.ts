@@ -47,7 +47,7 @@ export const navItems: NavData[] = [
   },
   {
     name: 'Trades',
-    url: '/theme/typography',
+    url: '/trades',
     //icon: 'icon-pencil'
   },
   {

@@ -27,9 +27,11 @@ return this.http.post(`${this.APIEndpoint}/fms/portfolio/create-order`,{
 }).pipe(map(data =>{console.log("order created successfully")}));
         }
 
-  getOrders(){
-    return this.http.get(`${this.APIEndpoint}/fms/portfolio/orders`)
+  getOrders(userId){
+    return this.http.get(`${this.APIEndpoint}/fms/portfolio/orders/${userId}`)
 }
-
+  getTransactions(userId){
+    return this.http.get(`${this.APIEndpoint}/fms/portfolio/transactions/${userId}`)
+}
 
 }

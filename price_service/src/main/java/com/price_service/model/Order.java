@@ -1,5 +1,7 @@
 package com.price_service.model;
 
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
@@ -14,10 +16,13 @@ import lombok.Setter;
 
 @Document(collection = "orders")
 @Getter @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Order {
     @Id
     @Field("_id")
     private ObjectId id;
+    private ObjectId userId;
     @DBRef
     private Asset asset;
     private TransactionType transactionType; // buy or sell
@@ -27,7 +32,7 @@ public class Order {
     private Duration duration;
     private ZonedDateTime time;
     private State state = State.PENDING;
-    private BigDecimal commission;
+
 
     public String getId() { return id.toHexString();}
 

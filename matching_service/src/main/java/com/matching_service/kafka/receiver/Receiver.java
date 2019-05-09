@@ -48,6 +48,7 @@ public class Receiver {
         if (orderBook.getOrders().isEmpty())
             LOGGER.info("No matching orders found");
         else {
+            LOGGER.info("size: {}", orderBook.getOrders().size());
             LOGGER.info("can be imm filled:{}", matchingService.canBeImmediatelyFilled(orderBook, newOrder));
             matchingService.fillMarketOrder(orderBook, newOrder);
             LOGGER.info(newOrder.getState().toString());

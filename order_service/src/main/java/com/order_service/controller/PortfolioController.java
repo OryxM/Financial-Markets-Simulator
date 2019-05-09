@@ -4,6 +4,7 @@ package com.order_service.controller;
 import com.order_service.model.Asset;
 import com.order_service.message.request.OrderRequest;
 import com.order_service.service.PortfolioService;
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,9 +23,13 @@ public class PortfolioController {
         return (portfolioService.getAssets());
     }
 
-    @RequestMapping(value = "/orders")
-    public ResponseEntity<Object> getOrders() {
-        return new ResponseEntity<>(portfolioService.getOrders(), HttpStatus.OK);
+    @RequestMapping(value = "/orders/{userId}")
+    public ResponseEntity<Object> getOrders(@PathVariable String userId){
+        return new ResponseEntity<>(portfolioService.getOrders(userId), HttpStatus.OK);
+    }
+    @RequestMapping(value = "/transactions/{userId}")
+    public ResponseEntity<Object> getTransactions(@PathVariable String userId){
+        return new ResponseEntity<>(portfolioService.getTransactions(userId), HttpStatus.OK);
     }
     @PostMapping(value = "/create-order")
     public ResponseEntity<Object> createOrder(@RequestBody OrderRequest orderRequest)

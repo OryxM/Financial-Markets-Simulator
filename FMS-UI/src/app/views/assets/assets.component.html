@@ -1,10 +1,6 @@
 
 <div class="animated fadeIn">
-  <div class="card">
-    <div class="card-header">
-Stock assets
-    </div>
-    <div class="card-body">
+  
 
 <table mat-table
        [dataSource]="dataSource" multiTemplateDataRows
@@ -25,6 +21,15 @@ Stock assets
           <div class="example-element-symbol"> {{element.symbol}} </div>
           <div class="example-element-price"> {{element.price[0]}} </div>
         </div>
+<div class="chart-wrapper" style="height:100px;margin-top:5px;">
+        <canvas baseChart class="chart"
+        [datasets]="mainChartData"
+        [labels]="mainChartLabels"
+        [options]="mainChartOptions"
+        [colors]="mainChartColours"
+        [legend]="mainChartLegend"
+        [chartType]="mainChartType"></canvas>
+      </div>
 <div class="container">
   <div class="btn-holder">
          <button (click)="openDialog(element)" class="btn btn-primary">Trade</button>
@@ -44,6 +49,5 @@ Stock assets
   </tr>
   <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
 </table>
-</div>
-</div>
+
 </div>

@@ -12,11 +12,12 @@ export class OrdersComponent implements OnInit {
 
   constructor(private portfolioService: PortfolioService) { }
   dataSource : any ;
+  userId = localStorage.getItem('UserId');
 
   columnsToDisplay = ['Asset','Transaction','Quantity','Targetprice','State'];
   ngOnInit() {
 
-    this.portfolioService.getOrders()
+    this.portfolioService.getOrders(this.userId)
       .subscribe(data =>{this.dataSource = data;
         for (var _i = 0; _i < this.dataSource.length; _i++) {
           this.dataSource[_i].Transaction= this.dataSource[_i].transactionType+' at '+ this.dataSource[_i].orderType;

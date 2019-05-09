@@ -11,15 +11,22 @@ import org.springframework.kafka.core.KafkaTemplate;
 public class Sender {
     private static final Logger LOGGER = LoggerFactory.getLogger(Sender.class);
 
-    @Value("${kafka.topic.sender}")
-    private String topic;
+    @Value("${kafka.topic.sender.filledOrders}")
+    private String filledOrdersTopic;
+    @Value("${kafka.topic.sender.transactions}")
+    private String transactionTopic;
+
 
 
     @Autowired
     private KafkaTemplate<String, String> kafkaTemplate;
 
-    public void send(String orderId) {
+    public void sendOrder(String orderId) {
         LOGGER.info("order filled : {}", orderId);
-        kafkaTemplate.send(topic, orderId);
+        kafkaTemplate.send(filledOrdersTopic, orderId);
+    }
+    public void sendTransaction(String transactionId) {
+        LOGGER.info("order filled : {}", transactionId);
+        kafkaTemplate.send(transactionTopic, transactionId);
     }
 }

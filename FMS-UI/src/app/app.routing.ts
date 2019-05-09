@@ -9,6 +9,7 @@ import { P500Component } from './views/error/500.component';
 import { LoginComponent } from './views/login/login.component';
 import { AssetsComponent } from './views/assets/assets.component';
 import { OrdersComponent } from './views/orders/orders.component';
+import { TradesComponent } from './views/trades/trades.component';
 import { RegisterComponent } from './views/register/register.component';
 import { AuthGuard } from './_guards';
 
@@ -74,6 +75,14 @@ canActivate: [AuthGuard] ,
 
     data: {
       title: 'Orders'
+    }
+  },
+{
+    path: 'trades',
+    component: TradesComponent,
+
+    data: {
+      title: 'Trades'
     }
   },
 
