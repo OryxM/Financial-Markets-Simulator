@@ -14,17 +14,17 @@ export class PortfolioService {
     order(form :any){
 return this.http.post(`${this.APIEndpoint}/fms/portfolio/create-order`,{
       "assetSymbol": form.assetSymbol,
-     
+
       "transactionType":form.transactionType,
       "quantity":form.quantity,
 "orderType":form.orderType,
-"marketPrice":form.marketPrice,
 "limitPrice":form.limitPrice,
 "stopPrice":form.stopPrice,
 "duration":form.duration,
 "userId":localStorage.getItem('UserId'),
 
-}).pipe(map(data =>{console.log("order created successfully")}));
+}).pipe(
+map(data =>{console.log(data)}));
         }
 
   getOrders(userId){

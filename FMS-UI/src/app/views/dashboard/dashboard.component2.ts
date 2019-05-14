@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { getStyle, hexToRgba } from '@coreui/coreui/dist/js/coreui-utilities';
 import { CustomTooltips } from '@coreui/coreui-plugin-chartjs-custom-tooltips';
+import { ChartOptions, Data, Dataset, DEFAULT_TIME_CHART_OPTIONS, EMPTY_DATASET, TooltipItem } from './shared';
 
 @Component({
   templateUrl: 'dashboard.component.html'
@@ -213,98 +214,26 @@ export class DashboardComponent implements OnInit {
   public barChart1Type = 'bar';
 
   // mainChart
+  protected timestamps=["2016-07-27T07:45:00Z","2016-07-27T07:50:00Z","2016-07-27T08:16:22Z","2016-07-27T08:28:15Z"];
+  protected mainChartLabels: Date[] =[];
+  protected mainChartData: number[]=[];
+  protected mainChartOptions: ChartOptions;
 
-  public mainChartElements = 10;
-  public mainChartData1: Array<number> = [];
-  public mainChartData2: Array<number> = [];
-  public mainChartData3: Array<number> = [];
+  public mainChartElements = 4;
 
-  public mainChartData: Array<any> = [
-    {
-      data: this.mainChartData1,
-      label: 'Current'
-    },
-    {
-      data: this.mainChartData2,
-      label: 'Previous'
-    },
-    {
-      data: this.mainChartData3,
-      label: 'BEP'
-    }
-  ];
-  /* tslint:disable:max-line-length */
-  public mainChartLabels: Array<any> = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday', 'Monday', 'Thursday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
-  /* tslint:enable:max-line-length */
-  public mainChartOptions: any = {
-    tooltips: {
-      enabled: false,
-      custom: CustomTooltips,
-      intersect: true,
-      mode: 'index',
-      position: 'nearest',
-      callbacks: {
-        labelColor: function(tooltipItem, chart) {
-          return { backgroundColor: chart.data.datasets[tooltipItem.datasetIndex].borderColor };
-        }
-      }
-    },
-    responsive: true,
-    maintainAspectRatio: false,
-    scales: {
-      xAxes: [{
-        gridLines: {
-          drawOnChartArea: false,
-        },
-        ticks: {
-          callback: function(value: any) {
-            return value.charAt(0);
-          }
-        }
-      }],
-      yAxes: [{
-        ticks: {
-          beginAtZero: true,
-          maxTicksLimit: 5,
-          stepSize: Math.ceil(250 / 5),
-          max: 250
-        }
-      }]
-    },
-    elements: {
-      line: {
-        borderWidth: 2
-      },
-      point: {
-        radius: 0,
-        hitRadius: 10,
-        hoverRadius: 4,
-        hoverBorderWidth: 3,
-      }
-    },
-    legend: {
-      display: false
-    }
-  };
-  public mainChartColours: Array<any> = [
-    { // brandInfo
-      backgroundColor: hexToRgba(getStyle('--info'), 10),
-      borderColor: getStyle('--info'),
-      pointHoverBackgroundColor: '#fff'
-    },
-    { // brandSuccess
-      backgroundColor: 'transparent',
-      borderColor: getStyle('--success'),
-      pointHoverBackgroundColor: '#fff'
-    },
-    { // brandDanger
-      backgroundColor: 'transparent',
-      borderColor: getStyle('--danger'),
-      pointHoverBackgroundColor: '#fff',
-      borderWidth: 1,
-      borderDash: [8, 5]
-    }
-  ];
+  public mainChartColours = [{
+    backgroundColor: 'rgba(0,152,70,0.05)',
+    borderColor: 'rgba(0,152,70,1)',
+  }, {
+    backgroundColor: 'rgba(0,152,204,0.05)',
+    borderColor: 'rgba(0,152,204,1)'
+  }, {
+    backgroundColor: 'rgba(107,207,0,0.05)',
+    borderColor: 'rgba(107,207,0,1)'
+  }, {
+    backgroundColor: 'rgba(224,232,17,0.05)',
+    borderColor: 'rgba(224,232,17,1)'
+  }];
   public mainChartLegend = false;
   public mainChartType = 'line';
 
@@ -378,16 +307,24 @@ export class DashboardComponent implements OnInit {
 
   public random(min: number, max: number) {
     return Math.floor(Math.random() * (max - min + 1) + min);
-  }
 
+}
   ngOnInit(): void {
+console.log(new Date(2016, 6, 27, 14, 56, 0));
+
+let labels: Date[] = [];
+      for (let timestamp in this.timestamps) {
+        labels.push(new Date(timestamp));
+      }
+
+this.mainChartLabels=labels;
+
 
 
     // generate random values for mainChart
     for (let i = 0; i <= this.mainChartElements; i++) {
-      this.mainChartData1.push(this.random(50, 200));
-      this.mainChartData2.push(this.random(80, 100));
-      this.mainChartData3.push(65);
+      this.mainChartData.push(this.random(50, 200));
+
     }
   }
 }

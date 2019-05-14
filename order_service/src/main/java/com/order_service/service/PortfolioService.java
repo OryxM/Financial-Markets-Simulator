@@ -11,7 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import java.math.BigDecimal;
+
 import java.time.ZonedDateTime;
 import java.util.Date;
 import java.util.List;
@@ -44,33 +44,41 @@ public class PortfolioService {
         LOGGER.info(new Date().toString());
     }
 
-    public Order createOrder(OrderRequest orderRequest){
-        switch(orderRequest.getOrderType()){
-
-            case LIMIT:
-                LimitOrder limitOrder = new LimitOrder();
-                createMarketOrder(orderRequest,limitOrder);
-                limitOrder.setLimitPrice(orderRequest.getLimitPrice().get());
-
-                orderRepository.save(limitOrder);
-                sender.sendLimit(limitOrder);
-                return limitOrder;
-            case STOP:
-                StopLossOrder stopLossOrder =new StopLossOrder();
-                createMarketOrder(orderRequest,stopLossOrder);
-                stopLossOrder.setStopPrice(orderRequest.getStopPrice().get());
-                orderRepository.save(stopLossOrder);
-                return stopLossOrder;
-
-            default:
-                Order marketOrder = new Order();
-                marketOrder.setId(new ObjectId());
-                createMarketOrder(orderRequest,marketOrder);
-                orderRepository.save(marketOrder);
-                sender.send(marketOrder);
-                return marketOrder;
-
+    public boolean createOrder(OrderRequest orderRequest){
+        long totalVolume = 0;
+        List<Transaction> transactions = transactionRepository.findByUserId(new ObjectId(orderRequest.getUserId()));
+        for (Transaction transaction : transactions){
+            totalVolume+=transaction.getVolume();
         }
+        if (!(totalVolume < orderRequest.getQuantity() && orderRequest.getTransactionType() == TransactionType.SELL)) {
+            switch (orderRequest.getOrderType()) {
+
+                case LIMIT:
+                    LimitOrder limitOrder = new LimitOrder();
+                    createMarketOrder(orderRequest, limitOrder);
+                    limitOrder.setLimitPrice(orderRequest.getLimitPrice().get());
+
+                    orderRepository.save(limitOrder);
+                    sender.sendLimit(limitOrder);
+                    return true;
+                case STOP:
+                    StopLossOrder stopLossOrder = new StopLossOrder();
+                    createMarketOrder(orderRequest, stopLossOrder);
+                    stopLossOrder.setStopPrice(orderRequest.getStopPrice().get());
+                    orderRepository.save(stopLossOrder);
+                    return true;
+
+                default:
+                    Order marketOrder = new Order();
+                    marketOrder.setId(new ObjectId());
+                    createMarketOrder(orderRequest, marketOrder);
+                    orderRepository.save(marketOrder);
+                    sender.send(marketOrder);
+                    return true;
+
+            }
+        }
+     return false;
 
     }
 

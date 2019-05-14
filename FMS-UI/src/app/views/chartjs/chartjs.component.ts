@@ -11,7 +11,7 @@ export class ChartJSComponent {
     {data: [28, 48, 40, 19, 86, 27, 90], label: 'Series B'},
     {data: [18, 48, 77, 9, 100, 27, 40], label: 'Series C'}
   ];
-  public lineChartLabels: Array<any> = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
+  public lineChartLabels: Array<any> = [ 1,2,3,4,5,6,7];
   public lineChartOptions: any = {
     animation: false,
     responsive: true

@@ -1,4 +1,5 @@
 import { Component, OnInit,Inject } from '@angular/core';
+import { formatCurrency, getCurrencySymbol } from '@angular/common';
 import {animate, state, style, transition, trigger} from '@angular/animations';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
 import { FormBuilder, FormGroup,FormControl, Validators } from '@angular/forms';
@@ -30,44 +31,63 @@ export class AssetsComponent  implements OnInit{
 
   columnsToDisplay = ['symbol','bid','ask'];
 expandedElement: Asset | null;
-selectedAsset : Asset; 
-public mainChartElements = 10;
-  public 
-mainChartData1: Array<number> = [];
-  public mainChartData2: Array<number> = [];
-  public mainChartData3: Array<number> = [];
+selectedAsset : Asset;
 
-  public mainChartData: Array<any> = [
-    {
-      data: this.mainChartData1,
-      label: 'Current'
-    },
-    {
-      data: this.mainChartData2,
-      label: 'Previous'
-    },
-    {
-      data: this.mainChartData3,
-      label: 'BEP'
+
+
+  /* tslint:disable:max-line-length */
+  public chartLabels: Array<any> = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'];
+  /* tslint:enable:max-line-length */
+
+  public chartColours: Array<any> = [
+    {  backgroundColor: '#ddeedd',
+      borderColor: getStyle('--info'),
+       pointBackgroundColor: 'transparent',
+       pointBorderColor: getStyle('--info'),
+       pointHoverBackgroundColor: '#000000',
+       pointHoverBorderColor: 'rgba(77,83,96,1)',
+       borderWidth:'2'
     }
   ];
-  /* tslint:disable:max-line-length */
-  public mainChartLabels: Array<any> = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday', 'Monday', 'Tuesday', 'Wednesday'];
-  /* tslint:enable:max-line-length */
-  public mainChartOptions: any = {
-    tooltips: {
-      enabled: false,
-      custom: CustomTooltips,
-      intersect: true,
-      mode: 'index',
-      position: 'nearest',
-      callbacks: {
-        labelColor: function(tooltipItem, chart) {
-          return { backgroundColor: chart.data.datasets[tooltipItem.datasetIndex].borderColor };
-        }
+  public data : Array<any>=[];
+  public chartLegend = false;
+  public chartType = 'line';
+
+  public chartData(asset): Array<any>{
+  var prices :Array<any> =[];
+  for (var i=0;i<10;i++){
+    prices.push(asset.price[i].value)
+  };
+  let  chartdata: Array<any> = [
+      {
+        data: prices,
+        label: 'Current'
       }
-    },
+    ];
+    return chartdata;
+  }
+  public chartOptions(asset){
+    var max = asset.price[0].value;
+    var min = asset.price[0].value;
+    for (var i =1;i<10;i++){
+      if (asset.price[i].value > max) {max = asset.price[i].value};
+      if (asset.price[i].value< min){ min = asset.price[i].value};
+    }
+
+  let  chartoptions={
     responsive: true,
+    tooltips: {
+    enabled: true,
+    custom: CustomTooltips,
+    intersect: true,
+    mode: 'nearest',
+    position: 'nearest',
+    callbacks: {
+      labelColor: function(tooltipItem, chart) {
+        return { backgroundColor: chart.data.datasets[tooltipItem.datasetIndex].borderColor };
+      }
+    }
+  },
     maintainAspectRatio: false,
     scales: {
       xAxes: [{
@@ -80,63 +100,52 @@ mainChartData1: Array<number> = [];
           }
         }
       }],
-      yAxes: [{
-        ticks: {
-          beginAtZero: true,
-          maxTicksLimit: 5,
-          stepSize: Math.ceil(250 / 5),
-          max: 250
-        }
-      }]
-    },
-    elements: {
-      line: {
-        borderWidth: 2
+    yAxes: [{
+      gridLines: {
+        drawOnChartArea: false,
       },
-      point: {
-        radius: 0,
-        hitRadius: 10,
-        hoverRadius: 4,
-        hoverBorderWidth: 3,
+      ticks: {
+        beginAtZero: false,
+        maxTicksLimit: 7,
+        //stepSize: (max-min)/10,
+        max: max,
+        min:min
       }
-    },
-    legend: {
-      display: false
-    }
-  };
-  public mainChartColours: Array<any> = [
-    { // brandInfo
-      backgroundColor: hexToRgba(getStyle('--info'), 10),
-      borderColor: getStyle('--info'),
-      pointHoverBackgroundColor: '#fff'
-    },
-    { // brandSuccess
-      backgroundColor: 'transparent',
-      borderColor: getStyle('--success'),
-      pointHoverBackgroundColor: '#fff'
-    },
-    { // brandDanger
-      backgroundColor: 'transparent',
-      borderColor: getStyle('--danger'),
-      pointHoverBackgroundColor: '#fff',
-      borderWidth: 1,
-      borderDash: [8, 5]
-    }
-  ];
-  public mainChartLegend = false;
-  public mainChartType = 'line';
+    }]
+  },
 
- public random(min: number, max: number) {
-    return Math.floor(Math.random() * (max - min + 1) + min);
+  elements: {
+    line: {
+      borderWidth: 1
+    },
+    point: {
+      radius: 1,
+      hitRadius: 20,
+      hoverRadius: 20,
+    }
+  },
+  legend: {
+    display: false
   }
+};
+    return chartoptions;
+  }
+  public random(min: number, max: number) {
+     return Math.floor(Math.random() * (max - min + 1) + min);
+   }
+
 ngOnInit() {
-for (let i = 0; i <= this.mainChartElements; i++) {
-      this.mainChartData1.push(this.random(50, 200));
-      this.mainChartData2.push(this.random(80, 100));
-      this.mainChartData3.push(65);
-    };
+
+  for (let i = 0; i <= 10; i++) {
+      this.data.push(this.random(1916, 1921));
+    }
+
   this.portfolioService.getAssets()
     .subscribe(data =>{this.dataSource = data;
+      for (var _i = 0; _i < this.dataSource.length; _i++) {
+        this.dataSource[_i].bid= getCurrencySymbol(this.dataSource[_i].bid.currency,"wide")+this.dataSource[_i].bid.value;
+          this.dataSource[_i].ask= getCurrencySymbol(this.dataSource[_i].ask.currency,"wide")+this.dataSource[_i].ask.value;
+        }
 console.log("success")});
 }
 openDialog(asset): void {
@@ -156,6 +165,11 @@ export interface Asset {
   symbol: string;
   price: number;
 }
+export interface Error {
+  message : string;
+  details: string;
+
+}
 
 @Component({
   selector: 'app-order-form',
@@ -164,6 +178,7 @@ export interface Asset {
 })
 export class OrderFormComponent implements OnInit {
   orderForm: FormGroup;
+  error: Error;
   constructor(private formBuilder: FormBuilder,
     private portfolioService: PortfolioService,
     public dialogRef: MatDialogRef<OrderFormComponent>,
@@ -174,7 +189,6 @@ export class OrderFormComponent implements OnInit {
                     transactionType:['', Validators.required],
                     quantity:['', Validators.required],
                    orderType:['', Validators.required],
- marketPrice:[''],
                     limitPrice:['', Validators.required],
                     stopPrice:['', Validators.required],
                     duration:['', Validators.required]
@@ -182,19 +196,24 @@ export class OrderFormComponent implements OnInit {
 
     }
  ngOnInit() {}
-    save(assetSymbol,assetPrice) {
+    save(assetSymbol) {
       this.dialogRef.close(this.orderForm.value);
       this.orderForm.value.assetSymbol=assetSymbol;
-this.orderForm.value.marketPrice=assetPrice;
+
            console.log(this.orderForm.value);
-           this.portfolioService.order(this.orderForm.value).pipe(first())
+           this.portfolioService.order(this.orderForm.value)
       .subscribe(
           data => {
-        console.log("ok");
-          },
-          error => {
-              console.log(error);
-          });
+        console.log("data "+data);
+      },
+      error=> {
+    console.log("error "+error);
+    this.error={
+      'message':error,
+      'details':'make sure..'
+    };
+      });
+
 }
 
   close() {

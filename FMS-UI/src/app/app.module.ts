@@ -8,7 +8,7 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
 import { PERFECT_SCROLLBAR_CONFIG } from 'ngx-perfect-scrollbar';
 import { PerfectScrollbarConfigInterface } from 'ngx-perfect-scrollbar';
-
+import { AlertConfig } from 'ngx-bootstrap/alert';
 
 import { MatCardModule } from '@angular/material/card';
 
@@ -17,12 +17,15 @@ import {MatRadioModule} from '@angular/material/radio';
 import {CdkTableModule} from '@angular/cdk/table';
 import {MatMenuModule} from '@angular/material/menu';
 import {MatDialogModule} from '@angular/material';
+import { AlertModule } from 'ngx-bootstrap';
 
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   suppressScrollX: true
 };
-
+export function getAlertConfig(): AlertConfig {
+  return Object.assign(new AlertConfig(), { type: 'success' });
+}
 import { AppComponent } from './app.component';
 
 // Import containers
@@ -83,10 +86,13 @@ MatRippleModule,
 MatTableModule,
 MatDialogModule,
 MatRadioModule,
-MatMenuModule
+MatMenuModule,
+  BrowserModule,
+AlertModule
   ],
   declarations: [
     AppComponent,
+
     ...APP_CONTAINERS,
     P404Component,
     P500Component,
@@ -102,6 +108,7 @@ TradesComponent
       OrderFormComponent
     ],
   providers: [
+{ provide: AlertConfig, useFactory: getAlertConfig },
  { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
       { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
 AuthGuard,
@@ -110,5 +117,6 @@ AuthGuard,
     useClass: HashLocationStrategy
   }],
   bootstrap: [ AppComponent ]
+
 })
 export class AppModule { }

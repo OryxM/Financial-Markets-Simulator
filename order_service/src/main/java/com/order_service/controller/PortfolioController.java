@@ -1,6 +1,7 @@
 package com.order_service.controller;
 
 
+import com.order_service.message.response.OrderResponse;
 import com.order_service.model.Asset;
 import com.order_service.message.request.OrderRequest;
 import com.order_service.service.PortfolioService;
@@ -32,8 +33,14 @@ public class PortfolioController {
         return new ResponseEntity<>(portfolioService.getTransactions(userId), HttpStatus.OK);
     }
     @PostMapping(value = "/create-order")
-    public ResponseEntity<Object> createOrder(@RequestBody OrderRequest orderRequest)
-    {
-        return new ResponseEntity<>(portfolioService.createOrder(orderRequest), HttpStatus.OK);
+    public ResponseEntity<Object> createOrder(@RequestBody OrderRequest orderRequest) {
+        if (portfolioService.createOrder(orderRequest)) {
+            return new ResponseEntity<>(new OrderResponse("order created"), HttpStatus.OK);
+        }
+        else {
+            return new ResponseEntity<>(
+                    new OrderResponse("insufficient quantity"),
+                    HttpStatus.BAD_REQUEST);
+        }
     }
 }

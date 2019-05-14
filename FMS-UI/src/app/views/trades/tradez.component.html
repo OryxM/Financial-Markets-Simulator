@@ -1,4 +1,3 @@
-
 <div class="animated fadeIn">
 
 
@@ -7,8 +6,9 @@
        class="mat-elevation-z8">
   <ng-container matColumnDef="{{column}}" *ngFor="let column of columnsToDisplay">
     <th mat-header-cell *matHeaderCellDef> {{column}} </th>
-    <td mat-cell *matCellDef="let element"> {{element[column]}}</td>
-<td mat-Cell><button class="btn btn-outline-secondary" (click)="delete()">tt<i class="fas fa-trash-alt"></i></button> </td>
+    <td mat-cell *matCellDef="let element"> {{element[column]}} </td>
+
+
   </ng-container>
   <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
   <tr mat-row *matRowDef="let element; columns: columnsToDisplay;"

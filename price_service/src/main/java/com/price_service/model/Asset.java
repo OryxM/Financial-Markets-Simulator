@@ -22,13 +22,13 @@ public class Asset {
     // ticker symbol is unique
     @Indexed(unique = true, direction = IndexDirection.DESCENDING, dropDups = true)
     private String symbol;
-    private ArrayDeque<BigDecimal> price;
-    private BigDecimal bid;
-    private BigDecimal ask;
+    private ArrayDeque<Price> price;
+    private Price bid;
+    private Price ask;
 
 
     public String getId() { return id.toHexString(); }
-    public void updatePrice(BigDecimal price){
+    public void updatePrice(Price price){
         this.price.addFirst(price);
         this.price.removeLast();
 

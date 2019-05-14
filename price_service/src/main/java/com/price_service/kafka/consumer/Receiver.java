@@ -38,7 +38,7 @@ public class Receiver {
                List<LimitOrder> bidList =orderRepository.findBid(new ObjectId(order.getAsset().getId()));
                if (!bidList.isEmpty()) {
                    LOGGER.info("Old Bid{}  ", order.getAsset().getBid());
-                   order.getAsset().setBid(bidList.get(0).getLimitPrice());
+                   order.getAsset().setBid(Price.builder().value(bidList.get(0).getLimitPrice()).currency(Currency.getInstance(Locale.US)).build());
                    LOGGER.info("New Bid{}  ", order.getAsset().getBid());
                    LOGGER.info("BID{}  ", bidList.get(0).getLimitPrice());
                    assetRepository.save(order.getAsset());
@@ -47,7 +47,7 @@ public class Receiver {
             if (order.getOrderType() == OrderType.LIMIT && order.getTransactionType() == TransactionType.SELL) {
                List<LimitOrder> askList =orderRepository.findAsk(new ObjectId(order.getAsset().getId()));
                if (!askList.isEmpty()) {
-                   order.getAsset().setAsk(askList.get(0).getLimitPrice());
+                   order.getAsset().setAsk(Price.builder().value(askList.get(0).getLimitPrice()).currency(Currency.getInstance(Locale.US)).build());
                    LOGGER.info("ASK{}  ", askList.get(0).getLimitPrice());
                    assetRepository.save(order.getAsset());
                }
@@ -63,8 +63,8 @@ public class Receiver {
         LOGGER.info("transaction {}  ", transactionId);
         Optional<Transaction> transaction = transactionRepository.findById(transactionId);
         if (transaction.isPresent()) {
-            if (transaction.get().getOrder().getAsset().getPrice().peekFirst()!=transaction.get().getPrice()) {
-                transaction.get().getOrder().getAsset().updatePrice(transaction.get().getPrice());
+            if (transaction.get().getOrder().getAsset().getPrice().peekFirst().getValue()!=transaction.get().getPrice()) {
+                transaction.get().getOrder().getAsset().updatePrice(Price.builder().value(transaction.get().getPrice()).currency(Currency.getInstance(Locale.US)).build());
                 assetRepository.save(transaction.get().getOrder().getAsset());
             }
             List<StopLossOrder> stopLossOrders = orderRepository.findStopLossOrders(new ObjectId(transaction.get().getOrder().getAsset().getId()),
