@@ -103,7 +103,7 @@ public void fillMarketOrder(OrderBook orderBook,Order order){
             if (order.notFilledQuantity()>= matchingOrder.notFilledQuantity())
             {
                 Transaction transactionLimit = new Transaction(new ObjectId(),
-                                                        matchingOrder.getUserId(),
+                                                        matchingOrder.getAccountId(),
                                                         matchingOrder,
                                                         matchingOrder.getLimitPrice(),
                                                         matchingOrder.notFilledQuantity(),
@@ -113,7 +113,7 @@ public void fillMarketOrder(OrderBook orderBook,Order order){
                 sender.sendTransaction(transactionLimit.getId());
 
                 Transaction transaction = new Transaction(new ObjectId(),
-                        order.getUserId(),
+                        order.getAccountId(),
                         order,
                         matchingOrder.getLimitPrice(),
                         order.notFilledQuantity(),
@@ -133,7 +133,7 @@ public void fillMarketOrder(OrderBook orderBook,Order order){
                         matchingOrder.setFilled(matchingOrder.getFilled() + order.notFilledQuantity());
                         limitOrderRepository.save(matchingOrder);
                         Transaction transactionLimit = new Transaction(new ObjectId(),
-                                matchingOrder.getUserId(),
+                                matchingOrder.getAccountId(),
                                 matchingOrder,
                                 matchingOrder.getLimitPrice(),
                                 order.notFilledQuantity(),
@@ -142,7 +142,7 @@ public void fillMarketOrder(OrderBook orderBook,Order order){
                         transactionRepository.save(transactionLimit);
                         sender.sendTransaction(transactionLimit.getId());
                         Transaction transaction = new Transaction(new ObjectId(),
-                                order.getUserId(),
+                                order.getAccountId(),
                                 order,
                                 matchingOrder.getLimitPrice(),
                                 order.notFilledQuantity(),
@@ -181,7 +181,7 @@ public void fillMarketOrder(OrderBook orderBook,Order order){
                 limitOrderRepository.save(matchingOrder);
                 sender.sendOrder(matchingOrder.getId());
                 Transaction transactionLimit = new Transaction(new ObjectId(),
-                        matchingOrder.getUserId(),
+                        matchingOrder.getAccountId(),
                         matchingOrder,
                         matchingOrder.getLimitPrice(),
                         matchingOrder.notFilledQuantity(),
@@ -190,7 +190,7 @@ public void fillMarketOrder(OrderBook orderBook,Order order){
                 transactionRepository.save(transactionLimit);
                 sender.sendTransaction(transactionLimit.getId());
                 Transaction transaction = new Transaction(new ObjectId(),
-                        order.getUserId(),
+                        order.getAccountId(),
                         order,
                         matchingOrder.getLimitPrice(),
                         order.notFilledQuantity(),

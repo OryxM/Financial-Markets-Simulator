@@ -23,7 +23,7 @@ public class OrderRequest {
     private Optional<BigDecimal> limitPrice;
     private Optional<BigDecimal> stopPrice;
     private Duration duration;
-    private String userId;
+    private String accountId;
 
 
 

@@ -1,4 +1,4 @@
-package com.price_service.Config;
+package com.order_service.configuration;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;
@@ -18,7 +18,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
-        registry.addEndpoint("/transactions")
+        registry.addEndpoint("/newlyCreatedAccounts")
                 .setAllowedOrigins("*");
         //.withSockJS();
     }

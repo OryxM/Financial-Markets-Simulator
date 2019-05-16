@@ -74,9 +74,6 @@ public Boolean signup(SignUpForm signUpRequest){
     Role userRole= roleRepository.findByRole("USER");
     roles.add(userRole);
     user.setRoles(roles);
-    Account account = new Account();
-    accountRepository.save(account);
-    user.setAccount(account);
     userRepository.save(user);
     return true;
 }

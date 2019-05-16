@@ -22,7 +22,7 @@ public class Transaction {
     @Id
     @Field("_id")
     private ObjectId id;
-    private ObjectId userId;
+    private ObjectId accountId;
     @DBRef
     private Order order;
     private BigDecimal price;

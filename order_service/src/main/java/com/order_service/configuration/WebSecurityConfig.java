@@ -59,6 +59,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 authorizeRequests()
                 .antMatchers(HttpMethod.POST, "/fms/auth/signup").permitAll()
                 .antMatchers(HttpMethod.POST, "/fms/auth/signin").permitAll()
+                .antMatchers( "/newlyCreatedAccounts").permitAll()
                 .anyRequest().authenticated().and()
                 .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
                 // disable session

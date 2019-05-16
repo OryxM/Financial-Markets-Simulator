@@ -24,10 +24,7 @@ public class Receiver {
     OrderRepository orderRepository;
     @Autowired
     AssetRepository assetRepository;
-    @Autowired
-    TransactionRepository transactionRepository;
-    @Autowired
-    Sender sender;
+
     @KafkaListener(topics = "${kafka.topic.receiver.filledOrders}")
     public void listen(@Payload String orderId) {
         LOGGER.info("order {}  filled", orderId);
@@ -58,35 +55,5 @@ public class Receiver {
         }
     }
 
-    @KafkaListener(topics = "${kafka.topic.receiver.transactions}")
-    public void listenTransaction(@Payload String transactionId) {
-        LOGGER.info("transaction {}  ", transactionId);
-        Optional<Transaction> transaction = transactionRepository.findById(transactionId);
-        if (transaction.isPresent()) {
-            if (transaction.get().getOrder().getAsset().getPrice().peekFirst().getValue()!=transaction.get().getPrice()) {
-                transaction.get().getOrder().getAsset().updatePrice(Price.builder().value(transaction.get().getPrice()).currency(Currency.getInstance(Locale.US)).build());
-                assetRepository.save(transaction.get().getOrder().getAsset());
-            }
-            List<StopLossOrder> stopLossOrders = orderRepository.findStopLossOrders(new ObjectId(transaction.get().getOrder().getAsset().getId()),
-                                                                        transaction.get().getPrice());
-            if (!stopLossOrders.isEmpty()){
-                LOGGER.info("StopSize{}  ", stopLossOrders.size());
-                for(StopLossOrder stopLossOrder : stopLossOrders){
-                    Order order = new Order(new ObjectId(),
-                                            stopLossOrder.getUserId(),
-                                            stopLossOrder.getAsset(),
-                                            stopLossOrder.getTransactionType(),
-                                            stopLossOrder.getQuantity(),
-                                            stopLossOrder.getFilled(),
-                                            stopLossOrder.getOrderType(),
-                                            stopLossOrder.getDuration(),
-                                            ZonedDateTime.now(),
-                                            stopLossOrder.getState());
-                    sender.send(order);
 
-                }
-            }
-        }
-
-    }
 }

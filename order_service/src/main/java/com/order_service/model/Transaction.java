@@ -22,7 +22,7 @@ public class Transaction {
     @Id
     @Field("_id")
     private ObjectId id;
-    private ObjectId userId;
+    private ObjectId accountId;
     @DBRef
     private Order order;
     private BigDecimal price;
@@ -31,5 +31,6 @@ public class Transaction {
     private BigDecimal commission;
 
     public String getId() { return id.toHexString();}
+    public String getUserId() { return accountId.toHexString();}
 
 }

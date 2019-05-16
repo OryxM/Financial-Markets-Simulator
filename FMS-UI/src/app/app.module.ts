@@ -18,6 +18,12 @@ import {CdkTableModule} from '@angular/cdk/table';
 import {MatMenuModule} from '@angular/material/menu';
 import {MatDialogModule} from '@angular/material';
 import { AlertModule } from 'ngx-bootstrap';
+import { CarouselModule } from 'ngx-bootstrap/carousel';
+import { CollapseModule } from 'ngx-bootstrap/collapse';
+import { PaginationModule } from 'ngx-bootstrap/pagination';
+import { TooltipModule } from 'ngx-bootstrap/tooltip';
+import { ProgressbarModule } from 'ngx-bootstrap/progressbar';
+import { PopoverModule } from 'ngx-bootstrap/popover';
 
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
@@ -60,6 +66,7 @@ import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { TabsModule } from 'ngx-bootstrap/tabs';
 import { ChartsModule } from 'ng2-charts/ng2-charts';
 import { TradesComponent } from './views/trades/trades.component';
+import { HomeComponent } from './views/home/home.component';
 @NgModule({
   imports: [
     BrowserModule,
@@ -88,7 +95,13 @@ MatDialogModule,
 MatRadioModule,
 MatMenuModule,
   BrowserModule,
-AlertModule
+AlertModule,
+  CarouselModule,
+    CollapseModule,
+    PaginationModule,
+    PopoverModule,
+    ProgressbarModule,
+    TooltipModule
   ],
   declarations: [
     AppComponent,
@@ -101,7 +114,8 @@ AlertModule
  AssetsComponent,
 OrderFormComponent,
 OrdersComponent,
-TradesComponent
+TradesComponent,
+HomeComponent
 
   ],
  entryComponents :[

@@ -1,5 +1,6 @@
 package com.order_service.model;
 
+import java.util.List;
 import java.util.Set;
 
 import lombok.Getter;
@@ -28,7 +29,7 @@ public class User {
     @DBRef
     private Set<Role> roles;
     @DBRef
-    private Account account;
+    private List<Account> accounts;
 
     public String getId() { return id.toHexString(); }
 

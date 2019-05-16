@@ -136,6 +136,7 @@ selectedAsset : Asset;
 
 ngOnInit() {
 
+
   for (let i = 0; i <= 10; i++) {
       this.data.push(this.random(1916, 1921));
     }
@@ -152,7 +153,7 @@ openDialog(asset): void {
   this.selectedAsset = asset;
   console.log(this.selectedAsset.id);
    const dialogRef = this.dialog.open(OrderFormComponent, {
-     width: '300px',
+  width: '240px',
      data: this.selectedAsset
 
    });
@@ -178,7 +179,7 @@ export interface Error {
 })
 export class OrderFormComponent implements OnInit {
   orderForm: FormGroup;
-  error: Error;
+  error:any;
   constructor(private formBuilder: FormBuilder,
     private portfolioService: PortfolioService,
     public dialogRef: MatDialogRef<OrderFormComponent>,
@@ -197,7 +198,6 @@ export class OrderFormComponent implements OnInit {
     }
  ngOnInit() {}
     save(assetSymbol) {
-      this.dialogRef.close(this.orderForm.value);
       this.orderForm.value.assetSymbol=assetSymbol;
 
            console.log(this.orderForm.value);
@@ -205,13 +205,14 @@ export class OrderFormComponent implements OnInit {
       .subscribe(
           data => {
         console.log("data "+data);
+        localStorage.setItem('error','false');
+
+          this.dialogRef.close(this.orderForm.value);
       },
       error=> {
     console.log("error "+error);
-    this.error={
-      'message':error,
-      'details':'make sure..'
-    };
+    this.error= true;
+
       });
 
 }

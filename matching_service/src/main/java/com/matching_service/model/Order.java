@@ -27,7 +27,7 @@ public class Order {
     @Id
     @Field("_id")
     private ObjectId id;
-    private ObjectId userId;
+    private ObjectId accountId;
     @DBRef
     private Asset asset;
     private TransactionType transactionType; // buy or sell

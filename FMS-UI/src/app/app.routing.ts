@@ -11,6 +11,7 @@ import { AssetsComponent } from './views/assets/assets.component';
 import { OrdersComponent } from './views/orders/orders.component';
 import { TradesComponent } from './views/trades/trades.component';
 import { RegisterComponent } from './views/register/register.component';
+import { HomeComponent } from './views/home/home.component';
 import { AuthGuard } from './_guards';
 
 export const routes: Routes = [
@@ -23,11 +24,17 @@ export const routes: Routes = [
     path: '404',
     component: P404Component,
     data: {
-      title: 'Assets'
+      title: 'page 404'
+    }
+  },
+  {
+    path: 'home',
+    component: HomeComponent,
+    data: {
+      title: 'home'
     }
   },
 
- 
   {
     path: '500',
     component: P500Component,

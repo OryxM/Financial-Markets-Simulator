@@ -1,6 +1,5 @@
+<h1 mat-dialog-title>{{data.symbol}}</h1>
 
-
-        <h1>{{data.symbol}}</h1>
 
 
 <div mat-dialog-content [formGroup]="orderForm">
@@ -25,9 +24,11 @@
   </mat-form-field>
   <mat-form-field [hidden]="selected == 'MARKET' || selected == 'STOP' || !selected">
 <input formControlName="limitPrice" matInput placeholder="limit price" type="number">
+ <span matPrefix>$&nbsp;</span>
   </mat-form-field>
   <mat-form-field [hidden]="selected == 'MARKET' || selected == 'LIMIT' || !selected">
 <input formControlName="stopPrice" matInput placeholder="Stop price" type="number">
+ <span matPrefix>$&nbsp;</span>
   </mat-form-field>
   <mat-form-field>
     <mat-select formControlName="duration" placeholder="Duration" >
@@ -39,7 +40,9 @@
     </mat-select>
 
   </mat-form-field>
-
+  <alert *ngIf="error" type="danger">
+    <strong>Insufficient Quantity Owned</strong>
+  </alert>
 
 </div>
 <div mat-dialog-actions>

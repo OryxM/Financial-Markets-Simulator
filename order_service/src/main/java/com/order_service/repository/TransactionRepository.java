@@ -8,6 +8,6 @@ import org.springframework.data.mongodb.repository.Query;
 import java.util.List;
 
 public interface TransactionRepository extends MongoRepository<Transaction,String> {
-    @Query("{'userId':?0}")
-    List<Transaction> findByUserId(ObjectId userId);
+
+    List<Transaction> findByAccountId(ObjectId accountId);
 }

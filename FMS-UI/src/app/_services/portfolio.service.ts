@@ -21,17 +21,34 @@ return this.http.post(`${this.APIEndpoint}/fms/portfolio/create-order`,{
 "limitPrice":form.limitPrice,
 "stopPrice":form.stopPrice,
 "duration":form.duration,
-"userId":localStorage.getItem('UserId'),
+"accountId":localStorage.getItem('AccountId'),
 
 }).pipe(
 map(data =>{console.log(data)}));
         }
-
-  getOrders(userId){
-    return this.http.get(`${this.APIEndpoint}/fms/portfolio/orders/${userId}`)
+//
+createAccount(form :any){
+return this.http.post(`${this.APIEndpoint}/fms/portfolio/create-account`,{
+  "userId":localStorage.getItem('UserId'),
+  "balance": form.balance,
+  "currency":form.currency
 }
-  getTransactions(userId){
-    return this.http.get(`${this.APIEndpoint}/fms/portfolio/transactions/${userId}`)
+  ).pipe(
+map(data =>{console.log(data)}));
+    }
+    //
+
+
+
+  getOrders(accountId){
+    return this.http.get(`${this.APIEndpoint}/fms/portfolio/orders/${accountId}`)
+}
+  getTransactions(accountId){
+    return this.http.get(`${this.APIEndpoint}/fms/portfolio/transactions/${accountId}`)
+}
+
+getAccounts(userId){
+    return this.http.get(`${this.APIEndpoint}/fms/portfolio/accounts/${userId}`)
 }
 
 }
