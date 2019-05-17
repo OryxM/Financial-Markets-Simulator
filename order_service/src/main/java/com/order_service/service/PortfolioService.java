@@ -49,7 +49,7 @@ public class PortfolioService {
     public Account createAccount(AccountRequest accountRequest){
         Account account=Account.builder().balance(accountRequest.getBalance())
                                          .currency(Currency.getInstance(accountRequest.getCurrency()))
-                                         .equity(accountRequest.getBalance())
+                                         .accountValue(accountRequest.getBalance())
                                          .build();
         accountRepository.save(account);
         Optional<User> user=userRepository.findById(accountRequest.getUserId());
@@ -104,6 +104,9 @@ public class PortfolioService {
     }
 
     public List<Account> getAccounts(String userId) {
+        //for (Account account :userRepository.findById(userId).get().getAccounts()) {
+//            account.updateAccountValue();
+  //      }
         return (userRepository.findById(userId).get().getAccounts());
     }
 }

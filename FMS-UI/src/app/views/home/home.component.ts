@@ -18,6 +18,7 @@ export class HomeComponent implements OnInit {
   isCollapsed: boolean = false;
   iconCollapse: string = 'icon-arrow-up';
   dataSource : any ;
+user:any;
 accounts: string[] = [];
   showConversation: boolean = false;
   ws: any;
@@ -80,6 +81,7 @@ accounts: string[] = [];
     }
     //
   ngOnInit() {
+  this.user = localStorage.getItem('Username');
     this.accountForm = this.formBuilder.group({
         balance: ['', Validators.required],
         currency: ['', Validators.required]
@@ -100,7 +102,7 @@ accounts: string[] = [];
   changeAccount(id,balance,currency){
   localStorage.setItem("AccountId",id);
   localStorage.setItem("Balance",balance);
-  localStorage.setItem("Equity",balance);
+  localStorage.setItem("AccountValue",balance);
   localStorage.setItem("Currency",currency);
     this.router.navigate(['']);
   }

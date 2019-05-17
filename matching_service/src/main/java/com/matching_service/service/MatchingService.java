@@ -108,7 +108,7 @@ public void fillMarketOrder(OrderBook orderBook,Order order){
                                                         matchingOrder.getLimitPrice(),
                                                         matchingOrder.notFilledQuantity(),
                                                         ZonedDateTime.now(),
-                                                        BigDecimal.valueOf(20000));
+                                                        BigDecimal.valueOf(15));
                 transactionRepository.save(transactionLimit);
                 sender.sendTransaction(transactionLimit.getId());
 
@@ -118,7 +118,7 @@ public void fillMarketOrder(OrderBook orderBook,Order order){
                         matchingOrder.getLimitPrice(),
                         order.notFilledQuantity(),
                         ZonedDateTime.now(),
-                        BigDecimal.valueOf(20000));
+                        BigDecimal.valueOf(15));
                 transactionRepository.save(transaction);
 
                 sender.sendTransaction(transaction.getId());
@@ -138,7 +138,7 @@ public void fillMarketOrder(OrderBook orderBook,Order order){
                                 matchingOrder.getLimitPrice(),
                                 order.notFilledQuantity(),
                                 ZonedDateTime.now(),
-                                BigDecimal.valueOf(20000));
+                                BigDecimal.valueOf(15));
                         transactionRepository.save(transactionLimit);
                         sender.sendTransaction(transactionLimit.getId());
                         Transaction transaction = new Transaction(new ObjectId(),
@@ -147,7 +147,7 @@ public void fillMarketOrder(OrderBook orderBook,Order order){
                                 matchingOrder.getLimitPrice(),
                                 order.notFilledQuantity(),
                                 ZonedDateTime.now(),
-                                BigDecimal.valueOf(20000));
+                                BigDecimal.valueOf(15));
                         transactionRepository.save(transaction);
                         sender.sendTransaction(transaction.getId());
 
@@ -186,7 +186,7 @@ public void fillMarketOrder(OrderBook orderBook,Order order){
                         matchingOrder.getLimitPrice(),
                         matchingOrder.notFilledQuantity(),
                         ZonedDateTime.now(),
-                        BigDecimal.valueOf(20000));
+                        BigDecimal.valueOf(15));
                 transactionRepository.save(transactionLimit);
                 sender.sendTransaction(transactionLimit.getId());
                 Transaction transaction = new Transaction(new ObjectId(),
@@ -195,7 +195,7 @@ public void fillMarketOrder(OrderBook orderBook,Order order){
                         matchingOrder.getLimitPrice(),
                         order.notFilledQuantity(),
                         ZonedDateTime.now(),
-                        BigDecimal.valueOf(20000));
+                        BigDecimal.valueOf(15));
                 transactionRepository.save(transaction);
                 sender.sendTransaction(transaction.getId());
                 order.setFilled(order.getFilled() + matchingOrder.notFilledQuantity());

@@ -9,6 +9,7 @@ import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
+import javax.validation.constraints.DecimalMax;
 import java.math.BigDecimal;
 import java.util.Currency;
 import java.util.List;
@@ -21,8 +22,9 @@ public class Account {
     @Id
     @Field("_id")
     private ObjectId id;
+    @DecimalMax("${MAX_BALANCE}")
     private BigDecimal balance ;
-    private BigDecimal equity ;
+    private BigDecimal accountValue ;
     private Currency currency;
 
 

@@ -26,6 +26,7 @@ import { ProgressbarModule } from 'ngx-bootstrap/progressbar';
 import { PopoverModule } from 'ngx-bootstrap/popover';
 
 
+
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   suppressScrollX: true
 };
@@ -46,6 +47,7 @@ import { AuthGuard } from './_guards';
 import { AssetsComponent } from './views/assets/assets.component';
 import { OrdersComponent } from './views/orders/orders.component';
 import { OrderFormComponent} from './views/assets';
+
 const APP_CONTAINERS = [
   DefaultLayoutComponent
 ];
@@ -67,6 +69,7 @@ import { TabsModule } from 'ngx-bootstrap/tabs';
 import { ChartsModule } from 'ng2-charts/ng2-charts';
 import { TradesComponent } from './views/trades/trades.component';
 import { HomeComponent } from './views/home/home.component';
+import { GrdFilterPipe } from './views/grd-filter.pipe';
 @NgModule({
   imports: [
     BrowserModule,

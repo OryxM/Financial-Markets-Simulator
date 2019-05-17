@@ -122,9 +122,9 @@
 
               <tbody>
                   <tr  *ngFor="let element of dataSource" ><td  *ngFor="let column of columnsToDisplay"> {{element[column]}}</td>
-                  <button class="btn btn-primary" (click)="changeAccount(element['id'],element['Balance'],element['Currency'])"><i class="icon-login"></i></button></tr>
+                  <button class="btn btn-primary" (click)="changeAccount(element['id'],element['balance'],element['Currency'])"><i class="icon-login"></i></button></tr>
                 <tr  *ngFor="let account of accounts" ><td  *ngFor="let column of columnsToDisplay"> {{account[column]}}</td>
-<button class="btn btn-primary" (click)="changeAccount(account['id'],account['Balance'],account['Currency'])"><i class="icon-login"></i></button></tr>
+<button class="btn btn-primary" (click)="changeAccount(account['id'],account['balance'],account['Currency'])"><i class="icon-login"></i></button></tr>
               </tbody>
             </table>
 

@@ -29,7 +29,7 @@ public class Transaction {
     private long volume;
     private ZonedDateTime time;
     private BigDecimal commission;
-
+    private BigDecimal profit;
 
     public void close(){
 

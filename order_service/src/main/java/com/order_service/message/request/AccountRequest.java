@@ -13,7 +13,6 @@ import java.util.Currency;
 public class AccountRequest {
     private String userId;
     @NotBlank
-    @DecimalMax("${MAX_BALANCE}")
     private BigDecimal balance;
     private String currency;
 

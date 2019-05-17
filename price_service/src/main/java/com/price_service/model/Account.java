@@ -19,7 +19,7 @@ public class Account {
     @Field("_id")
     private ObjectId id;
     private BigDecimal balance;
-    private BigDecimal equity;
+    private BigDecimal accountValue;
     private Currency currency;
 
 
@@ -27,5 +27,6 @@ public class Account {
     public void updateAccountMetrics(BigDecimal transactionPrice,BigDecimal transactionCommission, TransactionType transactionType){
         this.balance=this.balance.subtract(transactionCommission);
         this.balance  = (transactionType==TransactionType.BUY)? this.balance.subtract(transactionPrice):this.balance.add(transactionPrice);
+
     }
 }
