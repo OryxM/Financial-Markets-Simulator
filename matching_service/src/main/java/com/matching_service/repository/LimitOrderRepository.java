@@ -9,15 +9,15 @@ import java.math.BigDecimal;
 import java.util.List;
 
 public interface LimitOrderRepository extends MongoRepository<LimitOrder,String> {
-    @Query("{ 'transactionType': ?0, 'asset.$id': ?1, 'orderType': ?2, 'state': ?3 }")
-    List<LimitOrder> findByTransactionAndAsset(TransactionType transactionType, ObjectId id, OrderType type, State state);
+    @Query("{ 'transactionType': ?0, 'asset.$id': ?1, 'orderType': ?2, 'status': ?3 }")
+    List<LimitOrder> findByTransactionAndAsset(TransactionType transactionType, ObjectId id, OrderType type, Status status);
 
 
-    @Query("{ 'transactionType': ?0, 'asset.$id': ?1, 'orderType': ?2, 'state': ?3, 'limitPrice':{'$lte':?4}}")
-    List<LimitOrder> findByTransactionAndAssetBuyLimit(TransactionType transactionType, ObjectId id, OrderType type, State state, BigDecimal price);
+    @Query("{ 'transactionType': ?0, 'asset.$id': ?1, 'orderType': ?2, 'status': ?3, 'limitPrice':{'$lte':?4}}")
+    List<LimitOrder> findByTransactionAndAssetBuyLimit(TransactionType transactionType, ObjectId id, OrderType type, Status status, BigDecimal price);
 
-    @Query("{ 'transactionType': ?0, 'asset.$id': ?1, 'orderType': ?2, 'state': ?3, 'limitPrice':{'$gte':?4}}")
-    List<LimitOrder> findByTransactionAndAssetSellLimit(TransactionType transactionType, ObjectId id, OrderType type, State state, BigDecimal price);
+    @Query("{ 'transactionType': ?0, 'asset.$id': ?1, 'orderType': ?2, 'status': ?3, 'limitPrice':{'$gte':?4}}")
+    List<LimitOrder> findByTransactionAndAssetSellLimit(TransactionType transactionType, ObjectId id, OrderType type, Status status, BigDecimal price);
 
 }
 

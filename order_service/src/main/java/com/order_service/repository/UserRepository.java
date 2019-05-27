@@ -1,11 +1,7 @@
 package com.order_service.repository;
 
-import java.util.List;
 import java.util.Optional;
-
-import com.order_service.model.Account;
 import com.order_service.model.User;
-import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
 public interface UserRepository extends MongoRepository<User, String> {

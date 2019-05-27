@@ -38,14 +38,14 @@ orderBook.setAsset(order.getAsset());
                 orderBook.setOrders(limitOrderRepository.findByTransactionAndAssetBuyLimit(order.oppositeTransaction(),
                         order.getAsset().getId(),
                         OrderType.LIMIT,
-                        State.PENDING,
+                        Status.PENDING,
                         ((LimitOrder) order).getLimitPrice()));
                 break;
             case SELL:
                 orderBook.setOrders(limitOrderRepository.findByTransactionAndAssetSellLimit(order.oppositeTransaction(),
                         order.getAsset().getId(),
                         OrderType.LIMIT,
-                        State.PENDING,
+                        Status.PENDING,
                         ((LimitOrder) order).getLimitPrice()));
                 break;
 
@@ -55,7 +55,7 @@ orderBook.setAsset(order.getAsset());
             orderBook.setOrders(limitOrderRepository.findByTransactionAndAsset(order.oppositeTransaction(),
                     order.getAsset().getId(),
                     OrderType.LIMIT,
-                    State.PENDING));
+                    Status.PENDING));
         }
 orderBook.sortOrders();
 
@@ -169,7 +169,7 @@ public void fillMarketOrder(OrderBook orderBook,Order order){
     }
 
     if ((order.getQuantity() <=  orderBook.totalVolume() && !canBeImmediatelyFilled(orderBook, order))|| (order.getQuantity() >  orderBook.totalVolume() && order.getDuration()==Duration.FOK)) {
-        order.setState(State.KILLED);
+        order.setStatus(Status.KILLED);
         marketOrderRepository.save(order);
     }
     if (order.getQuantity() > orderBook.totalVolume() && order.getDuration()==Duration.IOC) {

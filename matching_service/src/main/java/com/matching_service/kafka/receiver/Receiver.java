@@ -32,7 +32,7 @@ public class Receiver {
          else {
              LOGGER.info("can be imm filled:{}", matchingService.canBeImmediatelyFilled(orderBook, newOrder));
              matchingService.fillMarketOrder(orderBook, newOrder);
-             LOGGER.info(newOrder.getState().toString());
+             LOGGER.info(newOrder.getStatus().toString());
          }
 
 
@@ -51,7 +51,7 @@ public class Receiver {
             LOGGER.info("size: {}", orderBook.getOrders().size());
             LOGGER.info("can be imm filled:{}", matchingService.canBeImmediatelyFilled(orderBook, newOrder));
             matchingService.fillMarketOrder(orderBook, newOrder);
-            LOGGER.info(newOrder.getState().toString());
+            LOGGER.info(newOrder.getStatus().toString());
         }
 
     }

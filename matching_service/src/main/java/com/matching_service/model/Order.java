@@ -5,7 +5,6 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.ser.ZonedDateTimeSerializer;
 import com.matching_service.Configuration.CustomZonedDateTimeDeserializer;
-import com.sun.xml.internal.ws.util.Constants;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
@@ -38,7 +37,7 @@ public class Order {
     @JsonSerialize(using = ZonedDateTimeSerializer.class)
     @JsonDeserialize(using = CustomZonedDateTimeDeserializer.class)
     private ZonedDateTime time;
-    private State state = State.PENDING;
+    private Status status = Status.PENDING;
 
 
 
@@ -57,7 +56,7 @@ public class Order {
         return quantity - filled ;
     }
     public void fillOrder(){
-        this.state = State.FILLED;
+        this.status = Status.FILLED;
         this.filled = this.quantity;
 
 
