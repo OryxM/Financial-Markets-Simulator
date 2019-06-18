@@ -67,6 +67,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
                 // must be an admin if trying to access admin area (authentication is also required here)
                 .antMatchers(HttpMethod.POST, "/fms/auth/**").permitAll()
+                .antMatchers(HttpMethod.GET, "/fms/portfolio/mailByAccount/**").permitAll()
                 // Any other request must be authenticated
                 .anyRequest().authenticated();
     }

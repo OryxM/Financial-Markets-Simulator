@@ -46,6 +46,9 @@ map(data =>{console.log(data)}));
   getTransactions(accountId){
     return this.http.get(`${this.APIEndpoint}/fms/portfolio/transactions/${accountId}`)
 }
+  refresh(accountId){
+    return this.http.get(`${this.APIEndpoint}/fms/portfolio/refresh/${accountId}`)
+}
 
 getAccounts(userId){
     return this.http.get(`${this.APIEndpoint}/fms/portfolio/accounts/${userId}`)

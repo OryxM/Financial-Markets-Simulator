@@ -31,7 +31,9 @@ public class Transaction {
     private BigDecimal commission;
     private BigDecimal profit;
 
-    public void close(){
 
-    }
+    public String getId() { return id.toHexString();}
+
+    public String getAccountId() { return accountId.toHexString();}
+
 }

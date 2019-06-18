@@ -32,4 +32,6 @@ public class Transaction {
 
     public String getId() { return id.toHexString();}
 
+    public String getAccountId() { return accountId.toHexString();}
+
 }

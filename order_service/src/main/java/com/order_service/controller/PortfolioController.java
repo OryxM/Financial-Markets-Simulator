@@ -28,13 +28,17 @@ public class PortfolioController {
         return (portfolioService.getAssets());
     }
 
-    @RequestMapping(value = "/orders/{userId}")
-    public ResponseEntity<Object> getOrders(@PathVariable String userId){
-        return new ResponseEntity<>(portfolioService.getOrders(userId), HttpStatus.OK);
+    @RequestMapping(value = "/orders/{accountId}")
+    public ResponseEntity<Object> getOrders(@PathVariable String accountId){
+        return new ResponseEntity<>(portfolioService.getOrders(accountId), HttpStatus.OK);
     }
-    @RequestMapping(value = "/transactions/{userId}")
-    public ResponseEntity<Object> getTransactions(@PathVariable String userId){
-        return new ResponseEntity<>(portfolioService.getTransactions(userId), HttpStatus.OK);
+    @RequestMapping(value = "/transactions/{accountId}")
+    public ResponseEntity<Object> getTransactions(@PathVariable String accountId){
+        return new ResponseEntity<>(portfolioService.getTransactions(accountId), HttpStatus.OK);
+    }
+    @RequestMapping(value = "/refresh/{accountId}")
+    public ResponseEntity<Object> updateMetrics(@PathVariable String accountId) {
+        return new ResponseEntity<>(portfolioService.updateAccountMetrics(accountId), HttpStatus.OK);
     }
     @RequestMapping(value = "/accounts/{userId}")
     public ResponseEntity<Object> getAccounts(@PathVariable String userId){
@@ -50,8 +54,12 @@ public class PortfolioController {
                     new OrderResponse("insufficient quantity"),
                     HttpStatus.BAD_REQUEST);
         }
-    }
 
+    }
+    @RequestMapping(value = "/mailByAccount/{accountId}")
+    public ResponseEntity<Object> getMailByAccount(@PathVariable String accountId){
+        return new ResponseEntity<>(portfolioService.getMailByAccount(accountId), HttpStatus.OK);
+    }
     @PostMapping(value = "/create-account")
     public ResponseEntity<Object> createAccount(@RequestBody AccountRequest accountRequest) {
         this.messagingTemplate.convertAndSend("/topic/"+accountRequest.getUserId(), portfolioService.createAccount(accountRequest));

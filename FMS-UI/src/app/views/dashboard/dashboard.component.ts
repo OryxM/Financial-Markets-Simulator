@@ -18,7 +18,8 @@ import { PortfolioService } from 'app/_services';
 export class DashboardComponent implements OnInit {
   constructor(private formBuilder: FormBuilder,private portfolioService:PortfolioService){}
   orderForm: FormGroup;
-  error:any;
+  error:boolean= false;
+  message:boolean= false;
 balance:any;
 accountValue:any;
 stockData:any;
@@ -100,18 +101,30 @@ this.accountValue=getCurrencySymbol(localStorage.getItem("AccountCurrency"),"wid
         this.portfolioService.order(this.orderForm.value)
    .subscribe(
        data => {
-     console.log("data "+data);
-     localStorage.setItem('error','false');
+        this.message=true;
+        console.log("data "+data);
+        this.error= false;
 
    },
    error=> {
  console.log("error "+error);
  this.error= true;
+ this.message= false
 
    });
 
 }
-
+refresh(){
+  this.portfolioService.refresh(localStorage.getItem('AccountId'))
+.subscribe(
+ data => {// localStorage.setItem('Balance',data.balance);
+ //localStorage.setItem('AccountId',data.AccountId);
+console.log(data);
+},
+error=> {
+console.log("error "+error);
+});
+}
 
 
 

@@ -1,10 +1,11 @@
 <div class="animated fadeIn">
     <div class="row">
+
   <div class="col-6 col-lg-3">
     <div class="card">
       <div class="card-body p-0 clearfix">
-        <i class="fa fa-money bg-danger p-4 font-2xl mr-3 float-left"></i>
-        <div class="h5 text-danger mb-0 pt-3">{{balance}}</div>
+        <i class="fa fa-money bg-info p-4 font-2xl mr-3 float-left"></i>
+        <div class="h5 text-info mb-0 pt-3">{{balance}}</div>
         <div class="text-muted text-uppercase font-weight-bold font-xs">Balance</div>
       </div>
     </div>
@@ -12,22 +13,18 @@
   <div class="col-6 col-lg-3">
     <div class="card">
       <div class="card-body p-0 clearfix">
-        <i class="cui-dollar icons bg-danger p-4 font-2xl mr-3 float-left"></i>
-        <div class="h5 text-danger mb-0 pt-3">{{accountValue}}</div>
+        <i class="cui-dollar icons bg-info p-4 font-2xl mr-3 float-left"></i>
+        <div class="h5 text-info mb-0 pt-3">{{accountValue}}</div>
         <div class="text-muted text-uppercase font-weight-bold font-xs">Account value</div>
       </div>
     </div>
   </div>
-  <div class="col-6 col-lg-3">
-    <div class="card">
-      <div class="card-body p-0 clearfix">
-        <i class="fa fa-bell bg-danger p-4 font-2xl mr-3 float-left"></i>
-        <div class="h5 text-danger mb-0 pt-3">$xxxxx</div>
-        <div class="text-muted text-uppercase font-weight-bold font-xs">xxxxx</div>
-      </div>
-    </div>
-  </div>
 
+  <div class="col-6 col-lg-1">
+
+  <button (click)="refresh()"> <i class="fa fa-refresh bg-info p-4 font-2xl mr-3 float-left"></i></button>
+
+  </div><!--/.col-->
     <div class="col-xs-6 col-6 col-md-6">
   <div class="card">
     <div class="card-body">
@@ -86,8 +83,11 @@
     </mat-select>
 
   </mat-form-field>
-  <alert *ngIf="error" type="danger">
+  <alert *ngIf="error" type="info">
     <strong>Insufficient Quantity Owned</strong>
+  </alert>
+  <alert *ngIf="message" type="success">
+    <strong>Order successfully created</strong>
   </alert>
   <div class="row align-items-center">
 

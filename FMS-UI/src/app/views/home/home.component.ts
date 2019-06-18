@@ -6,6 +6,7 @@ import { first } from 'rxjs/operators';
 import * as Stomp from 'stompjs';
 import * as SockJS from 'sockjs-client';
 import { formatCurrency, getCurrencySymbol } from '@angular/common';
+import { AuthenticationService } from 'app/_services';
 
 @Component({
   selector: 'app-home',
@@ -14,7 +15,7 @@ import { formatCurrency, getCurrencySymbol } from '@angular/common';
 })
 export class HomeComponent implements OnInit {
   accountForm: FormGroup;
-  constructor(private formBuilder: FormBuilder,private route: ActivatedRoute,private router: Router,private portfolioService: PortfolioService) { }
+  constructor(private formBuilder: FormBuilder,private route: ActivatedRoute,private router: Router,private authenticationService : AuthenticationService,private portfolioService: PortfolioService) { }
   isCollapsed: boolean = false;
   iconCollapse: string = 'icon-arrow-up';
   dataSource : any ;
@@ -41,7 +42,7 @@ accounts: string[] = [];
   connect() {
       //connect to stomp where stomp endpoint is exposed
 
-      let socket = new WebSocket("ws://localhost:8080/newlyCreatedAccounts");
+      let socket = new WebSocket("ws://localhost:8200/newlyCreatedAccounts");
       this.ws = Stomp.over(socket);
       let that = this;
       this.ws.connect({}, function(frame) {
@@ -79,6 +80,9 @@ accounts: string[] = [];
       this.showConversation = connected;
 
     }
+ onLogout(){
+     this.authenticationService.logout();
+   }
     //
   ngOnInit() {
   this.user = localStorage.getItem('Username');
