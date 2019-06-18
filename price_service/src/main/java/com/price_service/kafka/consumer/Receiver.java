@@ -48,9 +48,9 @@ public class Receiver {
     private String findUserMail(){
         String id = "5cdbf89db93bc32fce8a1b69";
         String url = "http://localhost:8762/fms/portfolio/mailByAccount/5cdbf89db93bc32fce8a1b69";
-        ResponseEntity<String> address = restTemplate.getForEntity(url, String.class);
-       log.info("RESPONSE " + address.toString());
-        return address.toString();
+        String address = restTemplate.getForObject(url, String.class);
+       log.info("RESPONSE " + address);
+        return address;
     }
 
 

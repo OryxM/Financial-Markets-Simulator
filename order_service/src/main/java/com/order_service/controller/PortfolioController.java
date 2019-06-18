@@ -57,8 +57,8 @@ public class PortfolioController {
 
     }
     @RequestMapping(value = "/mailByAccount/{accountId}")
-    public ResponseEntity<Object> getMailByAccount(@PathVariable String accountId){
-        return new ResponseEntity<>(portfolioService.getMailByAccount(accountId), HttpStatus.OK);
+    public String getMailByAccount(@PathVariable String accountId){
+        return portfolioService.getMailByAccount(accountId);
     }
     @PostMapping(value = "/create-account")
     public ResponseEntity<Object> createAccount(@RequestBody AccountRequest accountRequest) {
