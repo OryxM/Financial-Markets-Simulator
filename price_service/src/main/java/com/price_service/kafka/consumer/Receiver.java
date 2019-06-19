@@ -44,12 +44,10 @@ public class Receiver {
     @Autowired
     private SimpMessageSendingOperations messagingTemplate;
 
-    @PostConstruct
-    private String findUserMail(){
-        String id = "5cdbf89db93bc32fce8a1b69";
-        String url = "http://localhost:8762/fms/portfolio/mailByAccount/5cdbf89db93bc32fce8a1b69";
+    private String findUserMail(String accountId){
+        String url = "http://localhost:8762/fms/portfolio/mailByAccount/"+accountId;
         String address = restTemplate.getForObject(url, String.class);
-       log.info("RESPONSE " + address);
+        log.info("RESPONSE " + address);
         return address;
     }
 
@@ -77,28 +75,53 @@ public class Receiver {
         message.setSubject(subject);
         message.setContent(content, "text/html");
         message.setSentDate(new Date());
-        // add message body
-        MimeBodyPart messageBodyPart = new MimeBodyPart();
-        messageBodyPart.setContent(content, "text/html");
-
-        Multipart multipart = new MimeMultipart();
-        multipart.addBodyPart(messageBodyPart);
-        // add attachment
-        //MimeBodyPart attachPart = new MimeBodyPart();
-        //attachPart.attachFile("pathToFile");
-        //multipart.addBodyPart(attachPart);
-        message.setContent(multipart);
         Transport.send(message);
     }
 
     @KafkaListener(topics = "${kafka.topic.receiver.filledOrders}")
-    public void listen(@Payload String orderId) {
+    public void listen(@Payload String orderId)throws MessagingException, UnsupportedEncodingException {
         log.info("order {}  filled", orderId);
-        Optional<Order> optionalOrder = orderRepository.findById(orderId);
+        Order order =(Order)orderRepository.findById(orderId) .orElseThrow(() ->
+                new NoSuchElementException("Order Not Found with id : " + orderId));
+        String content="<html><head>"
+                +"<style>"
+                +"table {"
+                +" font-family: arial, sans-serif;"
+                + "border-collapse: collapse;"
+                +" width: 100%;"
+                +"}"
+                +"td, th {"
+                +"border: 1px solid #dddddd;"
+                +"text-align: left;"
+                +"padding: 8px;"
+                +"}"
+                +"tr:nth-child(even) {"
+                +"background-color: #dddddd;"
+                +"}"
+                +"</style>"
+                + "</head>"
+                + "<body>"
+                +"<h2>Order "+orderId+" filled</h2>"
+                +"<table>"
+                +"<tr>"
+                +"<th>ID</th>"
+                +"<th>Asset</th>"
+                +"<th>transaction</th>"
+                +"<th>type</th>"
+                +"<th>volume</th>"
+                +"</tr>"
+                +"<tr>"
+                +"<td>"+orderId+"</td>"
+                +"<td>"+order.getAsset().getSymbol()+"</td>"
+                +"<td>"+order.getTransactionType()+"</td>"
+                +"<td>"+order.getOrderType()+"</td>"
+                +"<td>"+order.getQuantity()+"</td>"
+                +"</tr>"
+                +"</table>"
+                + "</body>";
+        sendMailNotification(findUserMail(order.getAccountId().toHexString()),"Order Filled",content);
 
-        if (optionalOrder.isPresent()) {
-            Order order = optionalOrder.get();
-           if (order.getOrderType() == OrderType.LIMIT && order.getTransactionType() == TransactionType.BUY) {
+                if (order.getOrderType() == OrderType.LIMIT && order.getTransactionType() == TransactionType.BUY) {
                List<LimitOrder> bidList =orderRepository.findBid(new ObjectId(order.getAsset().getId()));
                if (!bidList.isEmpty()) {
                    log.info("Old Bid{}  ", order.getAsset().getBid());
@@ -119,24 +142,67 @@ public class Receiver {
 
 
 
-        }
+
     }
     @KafkaListener(topics = "${kafka.topic.receiver.transactions}")
     public void listenTransaction (@Payload String transactionId) throws MessagingException, UnsupportedEncodingException {
         Transaction transaction = (Transaction)transactionRepository.findById(transactionId) .orElseThrow(() ->
-                new NoSuchElementException("Transaction Not Found with id : " + transactionId));;
-        log.info("transaction {}  ", transactionId);
-
-
-
+                new NoSuchElementException("Transaction Not Found with id : " + transactionId));
         Account account = (Account)accountRepository.findById(transaction.getAccountId()).orElseThrow(() ->
                 new NoSuchElementException("Account Not Found with id : " + transaction.getAccountId()));
         account.updateAccountMetrics(transaction.getPrice(),
                 transaction.getCommission(),
                 transaction.getOrder().getTransactionType());
         accountRepository.save(account);
-        //send notification
+        log.info("transaction {}  ", transactionId);
+        // send mail notification
+        String content="<html><head>"
+                +"<style>"
+                +"table {"
+                +" font-family: arial, sans-serif;"
+                + "border-collapse: collapse;"
+                +" width: 100%;"
+                +"}"
+                +"td, th {"
+                +"border: 1px solid #dddddd;"
+                +"text-align: left;"
+                +"padding: 8px;"
+                +"}"
+                +"tr:nth-child(even) {"
+                +"background-color: #dddddd;"
+                +"}"
+                +"</style>"
+                + "</head>"
+                + "<body>"
+                +"<h2>Trade "+transactionId+", confirmed</h2>"
+                +"<table>"
+                +"<tr>"
+                +"<th>ID</th>"
+                +"<th>Asset</th>"
+                +"<th>Transaction</th>"
+                +"<th>Type</th>"
+                +"<th>Volume</th>"
+                +"<th>Price</th>"
+                +"<th>Time</th>"
+                +"<th>Commission</th>"
+                +"</tr>"
+                +"<tr>"
+                +"<td>"+transactionId+"</td>"
+                +"<td>"+transaction.getOrder().getAsset().getSymbol()+"</td>"
+                +"<td>"+transaction.getOrder().getTransactionType()+"</td>"
+                +"<td>"+transaction.getOrder().getOrderType()+"</td>"
+                +"<td>"+transaction.getVolume()+"</td>"
+                +"<td>"+transaction.getPrice()+account.getCurrency().getSymbol()+"</td>"
+                +"<td>"+transaction.getTime()+"</td>"
+                +"<td>"+transaction.getCommission()+account.getCurrency().getSymbol()+"</td>"
+                +"</tr>"
+                +"</table>"
+                + "</body>";
+        sendMailNotification(findUserMail(transaction.getAccountId()),"Trade Confirmed",content);
+
+        //send notification to UI
         messagingTemplate.convertAndSend("/topic/"+transaction.getAccountId(), transaction);
+
         if (transaction.getOrder().getAsset().getPrice().peekFirst().getValue()!=transaction.getPrice()) {
                 transaction.getOrder().getAsset().updatePrice(Price.builder().value(transaction.getPrice()).currency(Currency.getInstance(Locale.US)).build());
                 assetRepository.save(transaction.getOrder().getAsset());

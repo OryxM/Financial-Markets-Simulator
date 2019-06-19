@@ -172,7 +172,7 @@ public class MatchingService {
         if (order.getQuantity() > orderBook.totalVolume() && order.getDuration()==Duration.IOC) {
 
             for (LimitOrder matchingOrder : orderBook.getOrders()) {
-                if (matchingOrder.getDuration() == Duration.IOC || (matchingOrder.getDuration() != Duration.IOC && matchingOrder.notFilledQuantity() < order.notFilledQuantity())) {
+                if (matchingOrder.getDuration() == Duration.IOC || (matchingOrder.getDuration() != Duration.IOC && matchingOrder.notFilledQuantity() <= order.notFilledQuantity())) {
                     matchingOrder.fillOrder();
 
                     limitOrderRepository.save(matchingOrder);

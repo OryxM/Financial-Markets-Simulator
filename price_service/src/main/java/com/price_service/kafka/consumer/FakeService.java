@@ -20,7 +20,6 @@ import yahoofinance.YahooFinance;
 public class FakeService {
 
 
-    @PostConstruct
     public void runFake()   throws AddressException, MessagingException, IOException {
 
         try {
@@ -33,6 +32,53 @@ public class FakeService {
           log.info("exception: ",ex);
 
         }
+        String transactionId = "5cdbf89db93bc32fce8a1b69";
+        String content="<html><head>"
+                +"<style>"
+                +"<h2>Trade"+transactionId+"confirmed</h2>"
+                +"table {"
+                +" font-family: arial, sans-serif;"
+                + "border-collapse: collapse;"
+                +" width: 100%;"
+                +"}"
+                +"td, th {"
+                +"border: 1px solid #dddddd;"
+                +"text-align: left;"
+                +"padding: 8px;"
+                +"}"
+                +"tr:nth-child(even) {"
+                +"background-color: #dddddd;"
+                +"}"
+                +"</style>"
+                + "</head>"
+                + "<body>"
+                +"<table>"
+                +"<tr>"
+                +"<th>ID</th>"
+                +"<th>Asset</th>"
+                +"<th>type</th>"
+                +"<th>transaction</th>"
+                +"<th>volume</th>"
+                +"<th>price</th>"
+                +"<th>time</th>"
+                +"</tr>"
+                +"<tr>"
+
+                +"<td>"+transactionId+"</td>"
+                +"<td>"+transactionId+"</td>"
+                +"<td>"+transactionId+"</td>"
+                +"<td>"+transactionId+"</td>"
+                +"<td>"+transactionId+"</td>"
+                +"<td>"+transactionId+"</td>"
+              /*  +"<td>"+transactionId+"</td>"
+                +"<td>"+transaction.getOrder().getAsset().getSymbol()+"</td>"
+                +"<td>"+transaction.getOrder().getOrderType().toString()+"</td>"
+                +"<td>"+transaction.getVolume()+"</td>"
+                +"<td>"+transaction.getPrice()+"</td>"
+                +"<td>"+transaction.getTime()+"</td>"*/
+                +"</tr>"
+                +"</table>"
+                + "</body>";
 
             Properties props = new Properties();
             props.put("mail.smtp.auth", "true");
@@ -53,12 +99,12 @@ public class FakeService {
             // set receiver
             message.setRecipients(Message.RecipientType.TO, InternetAddress.parse("maha.jabnouni@etudiant-enit.utm.tn"));
             //set message parameters
-            message.setSubject("Trade executed");
-            message.setContent("Trade executed", "text/html");
+            message.setSubject("Trade notification");
+            //message.setContent("Trade executed", "text/html");
             message.setSentDate(new Date());
             // add message body
             MimeBodyPart messageBodyPart = new MimeBodyPart();
-            messageBodyPart.setContent("Trade executed", "text/html");
+            messageBodyPart.setContent(content, "text/html");
 
             Multipart multipart = new MimeMultipart();
             multipart.addBodyPart(messageBodyPart);

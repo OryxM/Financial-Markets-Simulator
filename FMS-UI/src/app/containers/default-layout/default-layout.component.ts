@@ -44,7 +44,7 @@ export class DefaultLayoutComponent implements OnInit,OnDestroy {
       that.ws.subscribe("/errors", function(message) {
         alert("Error " + message.body);
       });
-      that.ws.subscribe("/topic/"+localStorage.getItem('AccountId'), function(message) {
+      that.ws.subscribe("/topic/"+localStorage.getItem("AccountId"), function(message) {
 
         that.showTrades(message.body);
       });
@@ -81,7 +81,9 @@ setConnected(connected) {
     this.notificationCount++;
   }
 
-   ngOnInit(){this.connect();}
+   ngOnInit(){
+console.log(localStorage.getItem("AccountId"));
+this.connect();}
   ngOnDestroy(): void {
     this.changes.disconnect();
   }
