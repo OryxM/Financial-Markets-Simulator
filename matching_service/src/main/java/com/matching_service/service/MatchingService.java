@@ -103,6 +103,7 @@ public class MatchingService {
                             matchingOrder.getAccountId(),
                             matchingOrder,
                             matchingOrder.getLimitPrice(),
+                            matchingOrder.getLimitPrice(),
                             matchingOrder.notFilledQuantity(),
                             ZonedDateTime.now(),
                             BigDecimal.valueOf(15));
@@ -112,6 +113,7 @@ public class MatchingService {
                     Transaction transaction = new Transaction(new ObjectId(),
                             order.getAccountId(),
                             order,
+                            matchingOrder.getLimitPrice(),
                             matchingOrder.getLimitPrice(),
                             order.notFilledQuantity(),
                             ZonedDateTime.now(),
@@ -133,6 +135,7 @@ public class MatchingService {
                                     matchingOrder.getAccountId(),
                                     matchingOrder,
                                     matchingOrder.getLimitPrice(),
+                                    matchingOrder.getLimitPrice(),
                                     order.notFilledQuantity(),
                                     ZonedDateTime.now(),
                                     BigDecimal.valueOf(15));
@@ -141,6 +144,7 @@ public class MatchingService {
                             Transaction transaction = new Transaction(new ObjectId(),
                                     order.getAccountId(),
                                     order,
+                                    matchingOrder.getLimitPrice(),
                                     matchingOrder.getLimitPrice(),
                                     order.notFilledQuantity(),
                                     ZonedDateTime.now(),
@@ -181,6 +185,7 @@ public class MatchingService {
                             matchingOrder.getAccountId(),
                             matchingOrder,
                             matchingOrder.getLimitPrice(),
+                            matchingOrder.getLimitPrice(),
                             matchingOrder.notFilledQuantity(),
                             ZonedDateTime.now(),
                             BigDecimal.valueOf(15));
@@ -189,6 +194,7 @@ public class MatchingService {
                     Transaction transaction = new Transaction(new ObjectId(),
                             order.getAccountId(),
                             order,
+                            matchingOrder.getLimitPrice(),
                             matchingOrder.getLimitPrice(),
                             order.notFilledQuantity(),
                             ZonedDateTime.now(),

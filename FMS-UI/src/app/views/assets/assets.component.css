@@ -1,5 +1,5 @@
 table {
-  width: 100%;
+  width:100%;
 }
 
 tr.example-detail-row {
@@ -20,9 +20,14 @@ tr.example-element-row:not(.example-expanded-row):active {
 
 .example-element-detail {
   overflow: hidden;
-  display: flex;
+
+
 }
 
+
+.bnt-holder{
+  background-color: black;
+}
 .example-element-diagram {
   min-width: 170px;
   border: 2px solid black;
@@ -48,9 +53,9 @@ tr.example-element-row:not(.example-expanded-row):active {
 .example-element-description-attribution {
   opacity: 0.5;
 }
-.container .btn-holder {
-  justify-content: flex-end;
-  display: flex;
+ .btn-holder {
+   justify-content: flex-end;
+     display: flex;
 }
 .container {
   justify-content: space-between;

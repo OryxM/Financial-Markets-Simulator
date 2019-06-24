@@ -60,7 +60,7 @@ canActivate: [AuthGuard],
   {
     path: '',
     component: DefaultLayoutComponent,
-canActivate: [AuthGuard] ,
+canActivate: [AuthGuard],
     data: {
       title: 'Dashboard'
     },
@@ -74,7 +74,7 @@ canActivate: [AuthGuard] ,
     component: AssetsComponent,
 
     data: {
-      title: 'Stock watchlist'
+      title: 'Stock watchlists'
     }
   },
 {
@@ -90,7 +90,7 @@ canActivate: [AuthGuard] ,
     component: TradesComponent,
 
     data: {
-      title: 'Trades'
+      title: 'Trade history'
     }
   },
 

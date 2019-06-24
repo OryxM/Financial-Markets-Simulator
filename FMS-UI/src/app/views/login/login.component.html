@@ -5,6 +5,8 @@
         <div class="col-md-8 mx-auto">
           <div class="card-group">
             <div class="card p-4">
+<img class="card-img-top" src='assets/img/brand/logo.png'>
+
               <div class="card-body">
                 <form [formGroup]="loginForm" (ngSubmit)="onSubmit()"  autocomplete="off" >
                   <h1>Login</h1>
@@ -31,9 +33,9 @@
                       <button  class="btn btn-primary px-4">Login</button>
 </div>
                     </div>
-                    <div class="col-6 text-right">
+                    <!--div class="col-6 text-right">
                       <button type="button" class="btn btn-link px-0">Forgot password?</button>
-                    </div>
+                    </div-->
                   </div>
                 </form>
               </div>
@@ -42,7 +44,7 @@
               <div class="card-body text-center">
                 <div>
                   <h2>Sign up</h2>
-                  <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+                  <p></p>
                   <a [routerLink]="['/register']" > <button type="button" class="btn btn-primary active mt-3">Register Now!</button></a>
                 </div>
               </div>

@@ -1,6 +1,8 @@
 // If you want to override variables do it here
 @import "variables";
-
+$theme-colors: (
+  "primary":    #034f84
+);
 // Import styles
 @import "~@coreui/coreui/scss/coreui";
 

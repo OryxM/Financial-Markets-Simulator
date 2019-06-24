@@ -15,7 +15,7 @@ export class OrdersComponent implements OnInit {
   dataSource : any ;
   accountId = localStorage.getItem('AccountId');
 
-  columnsToDisplay = ['Asset','Transaction','Quantity','Targetprice','Status'];
+  columnsToDisplay = ['Asset','Transaction','Volume','Targetprice','Status'];
   ngOnInit() {
 
     this.portfolioService.getOrders(this.accountId)
@@ -26,7 +26,7 @@ if (this.dataSource[_i].limitPrice)
  this.dataSource[_i].Targetprice=getCurrencySymbol(localStorage.getItem("AccountCurrency"),"wide")+this.dataSource[_i].limitPrice;
        this.dataSource[_i].Asset= this.dataSource[_i].asset.symbol;
     this.dataSource[_i].Status= this.dataSource[_i].status;
-        this.dataSource[_i].Quantity= this.dataSource[_i].quantity;
+        this.dataSource[_i].Volume= this.dataSource[_i].quantity;
 
 
 

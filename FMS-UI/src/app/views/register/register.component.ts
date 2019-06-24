@@ -6,7 +6,8 @@ import { RegistrationService} from 'app/_services';
 
 @Component({
   selector: 'app-dashboard',
-  templateUrl: 'register.component.html'
+  templateUrl: 'register.component.html',
+styleUrls: ['./register.component.scss']
 })
 export class RegisterComponent implements OnInit {
     registerForm: FormGroup;

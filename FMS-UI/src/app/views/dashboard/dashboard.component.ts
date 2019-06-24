@@ -24,6 +24,11 @@ balance:any;
 accountValue:any;
 stockData:any;
 customerData:any;
+  dataSource : any;
+  data:any;
+
+    columnsToDisplay = ['Asset','Transaction','Price','CurrentPrice','Volume','Commission','Profit_Loss'];
+
 /** list of banks */
 protected assets:any;
 
@@ -46,6 +51,30 @@ public  filteredServerSideBanks: ReplaySubject<any> = new ReplaySubject<any>(1);
 
 
   ngOnInit(): void {
+    console.log(localStorage.getItem('AccountId'));
+       this.dataSource=[];
+       this.portfolioService.getTransactions(localStorage.getItem('AccountId'))
+         .subscribe(data =>{this.dataSource= data;
+          /* for (var _i = 0; _i < this.data.length; _i++){
+             if (this.data[_i].order.transactionType == 'BUY'){
+             this.dataSource.push(this.data[_i]);
+
+           }
+
+         }*/
+
+           for (var _i = 0; _i < this.dataSource.length; _i++) {
+
+
+             this.dataSource[_i].Asset= this.dataSource[_i].order.asset.symbol;
+             this.dataSource[_i].Price= getCurrencySymbol(localStorage.getItem("AccountCurrency"),"wide")+this.dataSource[_i].price;
+             this.dataSource[_i].CurrentPrice= getCurrencySymbol(localStorage.getItem("AccountCurrency"),"wide")+this.dataSource[_i].currentPrice;
+             this.dataSource[_i].Volume= this.dataSource[_i].volume;
+             this.dataSource[_i].Transaction= this.dataSource[_i].order.transactionType+' at '+ this.dataSource[_i].order.orderType;
+             this.dataSource[_i].Commission= getCurrencySymbol(localStorage.getItem("AccountCurrency"),"wide")+this.dataSource[_i].commission;
+this.dataSource[_i].Profit_Loss=( Number(this.dataSource[_i].currentPrice) -  Number(this.dataSource[_i].price)).toFixed(2);
+   }
+    });
     this.orderForm = this.formBuilder.group({
       assetSymbol:[''],
                 transactionType:['', Validators.required],

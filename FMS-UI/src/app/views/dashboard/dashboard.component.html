@@ -4,7 +4,7 @@
   <div class="col-6 col-lg-3">
     <div class="card">
       <div class="card-body p-0 clearfix">
-        <i class="fa fa-money bg-info p-4 font-2xl mr-3 float-left"></i>
+        <i class="fa fa-money bg-primary p-4 font-2xl mr-3 float-left"></i>
         <div class="h5 text-info mb-0 pt-3">{{balance}}</div>
         <div class="text-muted text-uppercase font-weight-bold font-xs">Balance</div>
       </div>
@@ -13,19 +13,18 @@
   <div class="col-6 col-lg-3">
     <div class="card">
       <div class="card-body p-0 clearfix">
-        <i class="cui-dollar icons bg-info p-4 font-2xl mr-3 float-left"></i>
+        <i class="cui-dollar icons bg-primary p-4 font-2xl mr-3 float-left"></i>
         <div class="h5 text-info mb-0 pt-3">{{accountValue}}</div>
         <div class="text-muted text-uppercase font-weight-bold font-xs">Account value</div>
       </div>
     </div>
   </div>
 
-  <div class="col-6 col-lg-1">
-
-  <button (click)="refresh()"> <i class="fa fa-refresh bg-info p-4 font-2xl mr-3 float-left"></i></button>
-
-  </div><!--/.col-->
-    <div class="col-xs-6 col-6 col-md-6">
+<div class="col-6 col-lg-2">
+    <button class="btn  btn-block btn-primary"(click)="refresh()"> <i class="fa fa-refresh p-3 font-2xl"></i></button>
+</div></div>
+  <div class="row">
+    <div class="col-xs-4 col-4 col-md-4">
   <div class="card">
     <div class="card-body">
       <h3>Trade Stock</h3>
@@ -91,7 +90,7 @@
   </alert>
   <div class="row align-items-center">
 
-  <button mat-button (click)="save()" cdkFocusInitial>Submit</button>
+  <button mat-button (click)="save()"  cdkFocusInitial>Submit</button>
     <button mat-button>Cancel</button>
 
 </div>
@@ -101,5 +100,24 @@
   </div>
 </div>
 </div>
-</div>
-</div>
+<div class="col-xs-6 col-6 col-md-8">
+<div class="card">
+  <div class="card-header">
+    <strong>Stock portfolio</strong>
+  </div>
+<div class="card-body">
+  <table mat-table
+         [dataSource]="dataSource" multiTemplateDataRows
+         class="mat-elevation-z8">
+    <ng-container matColumnDef="{{column}}" *ngFor="let column of columnsToDisplay">
+      <th mat-header-cell *matHeaderCellDef> {{column}} </th>
+      <td mat-cell *matCellDef="let element"> {{element[column]}}</td>
+
+    </ng-container>
+    <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+    <tr mat-row *matRowDef="let element; columns: columnsToDisplay;"
+        class="example-element-row">
+    </tr>
+
+  </table></div></div></div>
+</div></div>

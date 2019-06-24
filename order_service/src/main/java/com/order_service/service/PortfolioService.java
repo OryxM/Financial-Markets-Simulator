@@ -73,7 +73,7 @@ public class PortfolioService {
             totalVolume+=transaction.getVolume();
             else totalVolume-=transaction.getVolume();
         }
-        if (true/*!(totalVolume < orderRequest.getQuantity() && orderRequest.getTransactionType() == TransactionType.SELL)*/) {
+        if (!(totalVolume < orderRequest.getQuantity() && orderRequest.getTransactionType() == TransactionType.SELL)) {
             switch (orderRequest.getOrderType()) {
 
                 case LIMIT:
@@ -109,7 +109,17 @@ public class PortfolioService {
         return(orderRepository.findByAccountId(new ObjectId(accountId)));
     }
     public List<Transaction> getTransactions(String accountId){
-        return(transactionRepository.findByAccountId(new ObjectId(accountId)));
+        List<Transaction> transactions =transactionRepository.findByAccountId(new ObjectId(accountId));
+        BigDecimal currentPrice;
+        for (Transaction transaction : transactions ){
+            if (transaction.getOrder().getTransactionType() == BUY)
+            currentPrice = assetRepository.findBySymbol(transaction.getOrder().getAsset().getSymbol()).getBid().getValue();
+            else
+                currentPrice = assetRepository.findBySymbol(transaction.getOrder().getAsset().getSymbol()).getAsk().getValue();
+            transaction.setCurrentPrice(currentPrice);
+        }
+        return transactions;
+      //  return  transactionRepository.findByAccountId(new ObjectId(accountId));
     }
 
     public List<Account> getAccounts(String userId) {

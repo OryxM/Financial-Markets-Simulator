@@ -26,6 +26,7 @@ public class Transaction {
     @DBRef
     private Order order;
     private BigDecimal price;
+    private BigDecimal currentPrice;
     private long volume;
     private ZonedDateTime time;
     private BigDecimal commission;

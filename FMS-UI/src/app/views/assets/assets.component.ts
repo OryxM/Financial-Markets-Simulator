@@ -28,6 +28,7 @@ import { first } from 'rxjs/operators';
 export class AssetsComponent  implements OnInit{
     constructor(private portfolioService: PortfolioService,public dialog: MatDialog) {}
   dataSource : any ;
+    dataS : any ;
 
   columnsToDisplay = ['symbol','bid','ask'];
 expandedElement: Asset | null;
@@ -35,8 +36,19 @@ selectedAsset : Asset;
 
 
 
+
   /* tslint:disable:max-line-length */
-  public chartLabels: Array<any> = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'];
+  public chartLabels: Array<any> = [ '2019-06-09 18:43:13',
+'2019-06-09 18:43:15',
+'2019-06-09 18:43:18',
+'2019-06-09 18:43:21',
+'2019-06-09 18:43:22',
+'2019-06-09 18:43:23',
+'2019-06-09 18:43:24',
+'2019-06-09 18:43:30',
+'2019-06-09 18:43:32',
+'2019-06-09 18:43:53'
+]
   /* tslint:enable:max-line-length */
 
   public chartColours: Array<any> = [
@@ -80,8 +92,8 @@ selectedAsset : Asset;
     enabled: true,
     custom: CustomTooltips,
     intersect: true,
-    mode: 'nearest',
-    position: 'nearest',
+    mode: 'index',
+    position: 'average',
     callbacks: {
       labelColor: function(tooltipItem, chart) {
         return { backgroundColor: chart.data.datasets[tooltipItem.datasetIndex].borderColor };
@@ -91,14 +103,14 @@ selectedAsset : Asset;
     maintainAspectRatio: false,
     scales: {
       xAxes: [{
-        gridLines: {
-          drawOnChartArea: false,
+        type: 'time',
+          distribution: 'linear',
+      time: {
+        displayFormats: {
+           'second': 'h:mm:ss a',
+
         },
-        ticks: {
-          callback: function(value: any) {
-            return value.charAt(0);
-          }
-        }
+      }
       }],
     yAxes: [{
       gridLines: {
@@ -121,7 +133,7 @@ selectedAsset : Asset;
     point: {
       radius: 1,
       hitRadius: 20,
-      hoverRadius: 20,
+      hoverRadius: 20
     }
   },
   legend: {
@@ -137,18 +149,38 @@ selectedAsset : Asset;
 ngOnInit() {
 
 
+
+
   for (let i = 0; i <= 10; i++) {
       this.data.push(this.random(1916, 1921));
     }
+    this.portfolioService.getAssets()
+      .subscribe(data =>{
+        this.dataS = data;
+
+          for (var _i = 0; _i < 6; _i++) {
+            this.dataS[_i].bid= getCurrencySymbol(this.dataS[_i].bid.currency,"wide")+this.dataS[_i].bid.value;
+              this.dataS[_i].ask= getCurrencySymbol(this.dataS[_i].ask.currency,"wide")+this.dataS[_i].ask.value;
+            }
+            for (var _i = 0; _i < 3; _i++) {
+              this.dataS[_i] = this.dataS[_i+3];
+
+              }
+                this.dataS.length=3;
+    console.log("success")});
 
   this.portfolioService.getAssets()
     .subscribe(data =>{this.dataSource = data;
-      for (var _i = 0; _i < this.dataSource.length; _i++) {
+
+      for (var _i = 0; _i < 3; _i++) {
         this.dataSource[_i].bid= getCurrencySymbol(this.dataSource[_i].bid.currency,"wide")+this.dataSource[_i].bid.value;
           this.dataSource[_i].ask= getCurrencySymbol(this.dataSource[_i].ask.currency,"wide")+this.dataSource[_i].ask.value;
         }
+        this.dataSource.length=3;
+
 console.log("success")});
 }
+
 openDialog(asset): void {
   this.selectedAsset = asset;
   console.log(this.selectedAsset.id);

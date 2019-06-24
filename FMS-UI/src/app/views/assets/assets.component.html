@@ -1,49 +1,118 @@
 
 <div class="animated fadeIn">
 
+  <div class="row">
+    <div class="col-sm-6 col-md-6">
+      <div class="card">
+        <div class="card-header">
+          Most active
+        </div>
+        <div class="card-body">
+            <table mat-table
+                   [dataSource]="dataSource" multiTemplateDataRows
+                   class="mat-elevation-z8">
+              <ng-container matColumnDef="{{column}}" *ngFor="let column of columnsToDisplay">
+                <th mat-header-cell *matHeaderCellDef> {{column}} </th>
+                <td mat-cell *matCellDef="let element"> {{element[column]}} </td>
 
-<table mat-table
-       [dataSource]="dataSource" multiTemplateDataRows
-       class="mat-elevation-z8">
-  <ng-container matColumnDef="{{column}}" *ngFor="let column of columnsToDisplay">
-    <th mat-header-cell *matHeaderCellDef> {{column}} </th>
-    <td mat-cell *matCellDef="let element"> {{element[column]}} </td>
+                <button (click)="openDialog(element)" class="btn btn-primary">Trade</button>
+    </ng-container>
 
-
-  </ng-container>
-
-  <!-- Expanded Content Column - The detail row is made up of this one column that spans across all columns -->
-  <ng-container matColumnDef="expandedDetail">
-    <td mat-cell *matCellDef="let element" [attr.colspan]="columnsToDisplay.length">
-      <div class="example-element-detail"
-           [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
-
-<div class="chart-wrapper" style="height:200px;width:500px;margin-top:5px;">
-        <canvas baseChart class="chart"
-        [datasets]="chartData(element)"
-        [labels]="chartLabels"
-        [options]="chartOptions(element)"
-        [colors]="chartColours"
-        [legend]="chartLegend"
-        [chartType]="chartType"></canvas>
-      </div>
-<div class="container">
-  <div class="btn-holder">
-         <button (click)="openDialog(element)" class="btn btn-primary">Trade</button>
- </div>
- </div>
- </div>
-    </td>
-
-  </ng-container>
-
-  <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
-  <tr mat-row *matRowDef="let element; columns: columnsToDisplay;"
-      class="example-element-row"
-      [class.example-expanded-row]="expandedElement === element"
-      (click)="expandedElement = expandedElement === element ? null : element">
-  </tr>
-  <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
-</table>
-
+              <!-- Expanded Content Column - The detail row is made up of this one column that spans across all columns -->
+              <ng-container matColumnDef="expandedDetail">
+                <td mat-cell *matCellDef="let element" [attr.colspan]="columnsToDisplay.length">
+                  <div class="example-element-detail"
+                       [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
+                       <div class="btn-holder">
+                       <button (click)="openDialog(element)" class="btn btn-primary">Trade</button>
 </div>
+            <div class="chart-wrapper" style="height:150px;width:400px;margin-top:5px;">
+                    <canvas baseChart class="chart"
+                    [datasets]="chartData(element)"
+                    [labels]="chartLabels"
+                    [options]="chartOptions(element)"
+                    [colors]="chartColours"
+                    [legend]="chartLegend"
+                    [chartType]="chartType"></canvas>
+                  </div>
+            <!--div class="container"-->
+
+             <!--/div-->
+             </div>
+                </td>
+
+              </ng-container>
+
+              <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+              <tr mat-row *matRowDef="let element; columns: columnsToDisplay;"
+                  class="example-element-row"
+                  [class.example-expanded-row]="expandedElement === element"
+                  (click)="expandedElement = expandedElement === element ? null : element">
+              </tr>
+              <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
+            </table>
+        </div>
+          </div>
+            </div>
+
+
+
+            <div class="col-sm-6 col-md-6">
+              <div class="card">
+                <div class="card-header">
+                  Gainers
+                </div>
+                <div class="card-body">
+                    <table mat-table
+                           [dataSource]="dataS" multiTemplateDataRows
+                           class="mat-elevation-z8">
+                      <ng-container matColumnDef="{{column}}" *ngFor="let column of columnsToDisplay">
+                        <th mat-header-cell *matHeaderCellDef> {{column}} </th>
+                        <td mat-cell *matCellDef="let element"> {{element[column]}} </td>
+
+                        <button (click)="openDialog(element)" class="btn btn-primary">Trade</button>
+
+
+                      </ng-container>
+
+                      <!-- Expanded Content Column - The detail row is made up of this one column that spans across all columns -->
+                      <ng-container matColumnDef="expandedDetail">
+                        <td mat-cell *matCellDef="let element" [attr.colspan]="columnsToDisplay.length">
+                          <div class="example-element-detail"
+                               [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
+                               <div class="btn-holder">
+                               <button (click)="openDialog(element)" class="btn btn-primary">Trade</button>
+        </div>
+                    <div class="chart-wrapper" style="height:150px;width:400px;margin-top:5px;">
+                            <canvas baseChart class="chart"
+                            [datasets]="chartData(element)"
+                            [labels]="chartLabels"
+                            [options]="chartOptions(element)"
+                            [colors]="chartColours"
+                            [legend]="chartLegend"
+                            [chartType]="chartType"></canvas>
+                          </div>
+                    <!--div class="container"-->
+
+                     <!--/div-->
+                     </div>
+                        </td>
+
+                      </ng-container>
+
+                      <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+                      <tr mat-row *matRowDef="let element; columns: columnsToDisplay;"
+                          class="example-element-row"
+                          [class.example-expanded-row]="expandedElement === element"
+                          (click)="expandedElement = expandedElement === element ? null : element">
+                      </tr>
+                      <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
+                    </table>
+                </div>
+                  </div>
+                    </div>
+
+
+                  </div>
+                    </div>
+    <!--/.col-->
